@@ -12,3 +12,10 @@ For each frame/game tick (haven't decided yet), we (1) clear screen, (2) write t
 We can increase game speed by increasing the # of ticks/second.
 
 Score is milliseconds elapsed / 10
+
+## Contest 2 Features
+
+- Gets faster as time goes on
+- Live on-screen score counter
+- Pterodactyls
+- Ability to duck
