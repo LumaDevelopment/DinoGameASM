@@ -19,3 +19,4 @@ Score is milliseconds elapsed / 10
 - Live on-screen score counter
 - Pterodactyls
 - Ability to duck
+- Ability to restart game in same console window
