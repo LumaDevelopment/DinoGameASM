@@ -11,9 +11,19 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
-	; Print terrain
-	INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
+	; Attempt to load terrain from file into array
+	call LoadTerrain
+	cmp bl, 1
+	jne FailedToLoadTerrain ; Attempt failed
 
-	exit
+	mWrite <"Successfully loaded terrain file!",0dh,0ah>
+	jmp EndDinoGame
+
+	FailedToLoadTerrain:
+		mWrite <"Could not load terrain file!",0dh,0ah>
+		jmp EndDinoGame
+
+	EndDinoGame:
+		exit
 main ENDP
 END main

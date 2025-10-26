@@ -1,4 +1,5 @@
 INCLUDE Irvine32.inc
+INCLUDE Macros.inc
 
 ; Utilities.asm
 
@@ -22,6 +23,8 @@ ConsoleSizePrompt PROTO,
      targetCols:BYTE
 
 ; Terrain.asm
+
+LoadTerrain PROTO
 
 WriteTerrain PROTO,
      screenLength:BYTE,
