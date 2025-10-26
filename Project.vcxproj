@@ -12,6 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <MASM Include="DinoGame.asm" />
+    <MASM Include="ConsoleSizeMgmt.asm" />
+    <MASM Include="Utilities.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DinoGame.inc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4164AA65-1EF9-4E69-899B-D1BED776070B}</ProjectGuid>
