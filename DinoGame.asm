@@ -3,15 +3,32 @@
 
 INCLUDE Irvine32.inc
 
-.data
-rows BYTE ?
-cols BYTE ?
+TARGET_ROWS = 30
+TARGET_COLS = 120
 
 .code
-main proc
+
+; Determines if the current console size equals the 
+; target dimensions.
+; Returns: BL = 1 if size matches, 0 otherwise
+VerifyConsoleSize PROC USES eax edx
 	call GetMaxXY
-	mov  rows, al
-	mov  cols, dl
+	cmp al, TARGET_ROWS
+	jne Otherwise
+	cmp dl, TARGET_COLS
+	jne Otherwise
+
+	Match:
+		mov bl,1
+		jmp Return
+	Otherwise:
+		mov bl,0
+	Return:
+		ret
+VerifyConsoleSize ENDP
+
+main proc
+	call VerifyConsoleSize
 
 	exit
 main endp
