@@ -16,7 +16,13 @@ main PROC
 	cmp bl, 1
 	jne FailedToLoadTerrain ; Attempt failed
 
-	INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
+	; Test rotating terrain
+	mov ecx, 2000
+	TerrainLoop:
+		INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
+		call IncrementTerrain
+
+		loop TerrainLoop
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:

@@ -7,9 +7,10 @@ FULL_TERRAIN_LEN = 7200 ; 6 terrain layers
 
 .data
 
-terrainFilename BYTE "terrain.txt",0
+terrainFilename BYTE   "terrain.txt",0
 fileHandle      HANDLE ?
-terrain         BYTE FULL_TERRAIN_LEN DUP(?) ; 6 terrain layers, each with 1200 characters
+terrain         BYTE   FULL_TERRAIN_LEN DUP(?) ; 6 terrain layers, each with 1200 characters
+incTerrainByte  BYTE   ?
 
 .code
 
@@ -64,9 +65,12 @@ LoadTerrain ENDP
 ; until ready to write terrain, then writes from the 
 ; terrain layers. Should be the first step of rendering 
 ; a frame.
-WriteTerrain PROC USES eax ebx ecx,
+WriteTerrain PROC USES eax ebx ecx edx,
      screenLength:BYTE,
      screenWidth:BYTE
+
+     ; Move cursor to top-left of screen
+     call Clrscr
 
      ; Print # of blank lines = # of rows on screen - 6
      movzx ecx, screenLength
@@ -88,5 +92,45 @@ WriteTerrain PROC USES eax ebx ecx,
 
      ret
 WriteTerrain ENDP
+
+; For each layer of the terrain, saves the first byte,
+; moves the next 1199 left by one, then places the saved 
+; byte at the 1200th location of the layer.
+; Creates an infinitely looping terrain effect.
+IncrementTerrain PROC USES eax ebx ecx edx esi edi
+     mov ebx, 0 ; Use this to count layers.
+
+     IncrementLayer:
+          ; Calculate offset to current layer
+          mov eax, ebx
+          imul eax, TERRAIN_LAYER_LEN
+
+          ; Save first byte of this layer
+          movzx edx, BYTE PTR terrain[eax]
+          mov incTerrainByte, dl
+          
+          ; Move 1199 bytes left by one position
+          cld
+          mov ecx,TERRAIN_LAYER_LEN - 1
+          lea esi,terrain[eax + 1] ; Source: second byte of layer
+          lea edi,terrain[eax]     ; Dest:   first byte of layer
+          rep movsb
+
+          ; Set 1200th byte for that layer
+          mov eax, ebx
+          imul eax, TERRAIN_LAYER_LEN
+          add eax, 1199
+          mov dl, incTerrainByte
+          mov terrain[eax], dl
+
+          ; Increment layer counter
+          inc ebx
+
+          ; Check if last layer
+          cmp ebx,6
+          jne IncrementLayer
+
+     ret
+IncrementTerrain ENDP
 
 END

@@ -29,3 +29,5 @@ LoadTerrain PROTO
 WriteTerrain PROTO,
      screenLength:BYTE,
      screenWidth:BYTE
+
+IncrementTerrain PROTO
