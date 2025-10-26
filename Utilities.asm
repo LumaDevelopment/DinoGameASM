@@ -47,9 +47,9 @@ WriteCharsFromString PROC USES eax ebx ecx,
 	mov ecx, len
 
 	PrintChar:
-		mov al, BYTE PTR [ebx]
+		mov  al, BYTE PTR [ebx]
 		call WriteChar
-		inc ebx
+		inc  ebx
 		loop PrintChar
 
 	ret

@@ -54,7 +54,7 @@ ConsoleSizePrompt PROC USES eax ebx edx,
 
 		; Move rows and cols to EAX and EBX
 		; so INVOKE does not have to widen them
-		Call  GetMaxXY
+		call  GetMaxXY
 		movzx eax, al
 		movzx ebx, dl
 
@@ -69,7 +69,7 @@ ConsoleSizePrompt PROC USES eax ebx edx,
 
 		; Wait for user to press a key, then try again
 		call ReadChar
-		jmp CheckConsoleSize
+		jmp  CheckConsoleSize
 
 	CorrectConsoleSize:
 		call Clrscr ; In case any prompts were put on the screen
