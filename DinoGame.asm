@@ -11,6 +11,9 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
+	; Print terrain
+	INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
+
 	exit
 main ENDP
 END main
