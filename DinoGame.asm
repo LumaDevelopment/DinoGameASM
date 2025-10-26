@@ -16,7 +16,7 @@ main PROC
 	cmp bl, 1
 	jne FailedToLoadTerrain ; Attempt failed
 
-	mWrite <"Successfully loaded terrain file!",0dh,0ah>
+	INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:

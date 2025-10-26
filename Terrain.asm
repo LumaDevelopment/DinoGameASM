@@ -9,9 +9,7 @@ FULL_TERRAIN_LEN = 7200 ; 6 terrain layers
 
 terrainFilename BYTE "terrain.txt",0
 fileHandle      HANDLE ?
-
-; 6 terrain layers, each with 1200 characters
-terrain BYTE FULL_TERRAIN_LEN DUP(?)
+terrain         BYTE FULL_TERRAIN_LEN DUP(?) ; 6 terrain layers, each with 1200 characters
 
 .code
 
@@ -41,12 +39,12 @@ LoadTerrain PROC USES eax ecx edx
           jnc  check_buffer_size
           mWrite "Error reading terrain file. "
           call WriteWindowsMsg
-          mov bl,0
+          mov  bl,0
           jmp  close_file
 
      check_buffer_size:
           cmp eax,FULL_TERRAIN_LEN
-          je buf_size_ok
+          je  buf_size_ok
           mWrite <"Error: Bytes read does not equal terrain length!",0dh,0ah>
           mov bl, 0
           jmp quit
@@ -66,7 +64,7 @@ LoadTerrain ENDP
 ; until ready to write terrain, then writes from the 
 ; terrain layers. Should be the first step of rendering 
 ; a frame.
-WriteTerrain PROC USES ecx,
+WriteTerrain PROC USES eax ebx ecx,
      screenLength:BYTE,
      screenWidth:BYTE
 
@@ -78,11 +76,15 @@ WriteTerrain PROC USES ecx,
           call Crlf
           loop PrintBlankLine
 
-     ; Move screenWidth to 32-bit register 
-     ; so it matches parameter type
-     movzx ecx, screenWidth
-
-     ; TODO Print terrain
+     ; Print each layer of terrain
+     mov   eax, OFFSET terrain
+     movzx ebx, screenWidth ; So INVOKE does not expand arg and overrwrite eax
+     mov   ecx, 6           ; number of layers
+     PrintTerrainLayer:
+          INVOKE WriteCharsFromString, eax, ebx
+          call Crlf
+          add  eax, TERRAIN_LAYER_LEN
+          loop PrintTerrainLayer
 
      ret
 WriteTerrain ENDP
