@@ -1,6 +1,8 @@
 # DinoGameASM
 `chrome://dino`, remade in Assembly
 
+Original source code, iamges, and sounds can be found [here](https://source.chromium.org/chromium/chromium/src/+/main:components/neterror/).
+
 Graphics are stored in three series of arrays:
 
 - Terrain - These arrays can be rotated, so that the terrain goes an infinite loop but still has the appearance of moving.
