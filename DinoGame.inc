@@ -14,10 +14,6 @@ PrintCoordinate PROTO,
      X:DWORD,
      Y:DWORD
 
-WriteCharsFromString PROTO,
-     string:PTR BYTE,
-     len:DWORD
-
 ; ConsoleSizeMgmt.asm
 
 VerifyConsoleSize PROTO,
@@ -28,12 +24,29 @@ ConsoleSizePrompt PROTO,
      targetRows:BYTE,
      targetCols:BYTE
 
+; Screen.asm
+
+InitScreen PROTO
+
+SetRowInScreen PROTO,
+     rowIndex:BYTE,
+     rowText:PTR BYTE
+
+WipeRowInScreen PROTO,
+     rowIndex:BYTE
+
+SetPixelInScreen PROTO,
+     rowIndex:BYTE,
+     colIndex:BYTE,
+     charPointer:PTR BYTE
+
+RenderScreen PROTO
+
 ; Terrain.asm
 
 LoadTerrain PROTO
 
 WriteTerrain PROTO,
-     screenLength:BYTE,
-     screenWidth:BYTE
+     screenLength:BYTE
 
 IncrementTerrain PROTO

@@ -61,35 +61,44 @@ LoadTerrain PROC USES eax ecx edx
           ret
 LoadTerrain ENDP
 
-; Given the dimensions of the screen, writes blank lines 
-; until ready to write terrain, then writes from the 
-; terrain layers. Should be the first step of rendering 
-; a frame.
+; Given the length of the screen, wipes rows of the 
+; screen until terrain appears, then sets rows of 
+; the screen equal to the layers of the terrain
 WriteTerrain PROC USES eax ebx ecx edx,
-     screenLength:BYTE,
-     screenWidth:BYTE
-
-     ; Move cursor to top-left of screen
-     call Clrscr
+     screenLength:BYTE
 
      ; Print # of blank lines = # of rows on screen - 6
-     movzx ecx, screenLength
-     sub ecx, 6
+     mov al,0
+     WipeRow:
+          INVOKE WipeRowInScreen, al
+          inc al
+          cmp al,screenLength-6
+          jne WipeRow
 
-     PrintBlankLine:
-          call Crlf
-          loop PrintBlankLine
+     ; Now copy each terrain layer into the last 6 rows
+     ; Starting row = screenLength - 6
+     mov al,screenLength
+     sub al,6
+     mov ebx,0 ; layer counter
 
-     ; Print each layer of terrain
-     mov   eax, OFFSET terrain
-     movzx ebx, screenWidth ; So INVOKE does not expand arg and overrwrite eax
-     mov   ecx, 6           ; number of layers
-     PrintTerrainLayer:
-          INVOKE WriteCharsFromString, eax, ebx
-          call Crlf
-          add  eax, TERRAIN_LAYER_LEN
-          loop PrintTerrainLayer
+     SetTerrainLayer:
+          ; Compute pointer to layer in terrain
+          mov  ecx,ebx
+          imul ecx,TERRAIN_LAYER_LEN
+          mov  edx,OFFSET terrain
+          add  edx,ecx
 
+          ; call SetRowInScreen
+          INVOKE SetRowInScreen, al, edx
+
+          ; Increment counters
+          inc al
+          inc ebx
+
+          ; Check if continue
+          cmp ebx,6
+          jne SetTerrainlayer
+  
      ret
 WriteTerrain ENDP
 

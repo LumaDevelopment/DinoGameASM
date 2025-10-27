@@ -8,6 +8,9 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
+	; Initialize screen
+	call InitScreen
+
 	; Attempt to load terrain from file into array
 	call LoadTerrain
 	cmp bl, 1
@@ -16,8 +19,16 @@ main PROC
 	; Test rotating terrain
 	mov ecx, 2000
 	TerrainLoop:
-		INVOKE WriteTerrain, TARGET_ROWS, TARGET_COLS
+		; Render this frame
+		INVOKE WriteTerrain, TARGET_ROWS
+		call RenderScreen
+
+		; Infinitely looping terrain
 		call IncrementTerrain
+
+		; Delay so it can be visible
+		mov eax, 20
+		call Delay
 
 		loop TerrainLoop
 	jmp EndDinoGame

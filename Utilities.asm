@@ -36,23 +36,4 @@ PrintCoordinate PROC USES eax edx,
 	ret
 PrintCoordinate ENDP
 
-; Given a pointer to a string and a number of characters,
-; print that number of characters from the string.
-; THIS PROCEDURE DOES NOT CHECK FOR STRING LENGTH
-WriteCharsFromString PROC USES eax ebx ecx,
-	string:PTR BYTE, ; Pointer to a string
-	len:DWORD        ; Unsigned number of characters to print
-
-	mov ebx, string
-	mov ecx, len
-
-	PrintChar:
-		mov  al, BYTE PTR [ebx]
-		call WriteChar
-		inc  ebx
-		loop PrintChar
-
-	ret
-WriteCharsFromString ENDP
-
 END

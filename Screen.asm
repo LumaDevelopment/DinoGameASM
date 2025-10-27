@@ -9,6 +9,7 @@ BUFFER_SIZE = TARGET_ROWS * ROW_SIZE
 
 .data
 screenBuffer BYTE BUFFER_SIZE DUP(?)
+             BYTE 0 ; null-terminator
 blankRow     BYTE TARGET_COLS DUP(' ')
 
 .code
@@ -69,7 +70,7 @@ WipeRowInScreen ENDP
 SetPixelInScreen PROC USES eax ebx esi,
      rowIndex:BYTE,
      colIndex:BYTE,
-     charPointer: PTR BYTE ; Pointer to the byte to set at the given pixel in the screen
+     charPointer:PTR BYTE ; Pointer to the byte to set at the given pixel in the screen
 
      ; Calculate offset in screen buffer
      movzx eax,rowIndex
@@ -85,6 +86,11 @@ SetPixelInScreen PROC USES eax ebx esi,
      ret
 SetPixelInScreen ENDP
 
-; PROC - RenderScreen
+RenderScreen PROC USES edx
+     ; Write entire buffer to screen!
+     mov edx, OFFSET screenBuffer
+     call WriteString
+     ret
+RenderScreen ENDP
 
 END
