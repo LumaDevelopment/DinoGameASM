@@ -55,7 +55,7 @@ SetRowInScreen PROC USES eax ecx edi esi,
 SetRowInScreen ENDP
 
 ; Replaces the row at the given index with spaces
-WipeRowInScreen PROC USES eax ecx edi esi,
+WipeRowInScreen PROC,
      rowIndex:BYTE ; Unsigned int representing the index of the row to wipe
 
      INVOKE SetRowInScreen, rowIndex, OFFSET blankRow
