@@ -17,7 +17,6 @@ main PROC
 	jne FailedToLoadTerrain ; Attempt failed
 
 	; Test rotating terrain
-	mov ecx, 2000
 	TerrainLoop:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
@@ -27,10 +26,10 @@ main PROC
 		call IncrementTerrain
 
 		; Delay so it can be visible
-		mov eax, 20
+		mov eax, 10
 		call Delay
 
-		loop TerrainLoop
+		jmp TerrainLoop
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:
