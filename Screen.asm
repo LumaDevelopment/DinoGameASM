@@ -50,7 +50,27 @@ WipeRowInScreen PROC USES eax ecx edi esi,
      ret
 WipeRowInScreen ENDP
 
-; PROC - SetRowInScreen
+; Plucks TARGET_COLS bytes from the given text and sets 
+; the row at the given index to those bytes.
+; THIS PROCEDURE DOES NOT CHECK FOR STRING LENGTH
+SetRowInScreen PROC USES eax ecx edi esi,
+     rowIndex:BYTE,   ; Unsigned int representing the index of the row to set
+     rowText:PTR BYTE ; Pointer to the string 
+
+     ; Calculate offset
+     movzx eax,rowIndex
+     imul  eax,ROW_SIZE
+
+     ; Move bytes from rowText to eax pos
+     cld
+     mov esi,rowText
+     lea edi,screenBuffer[eax]
+     mov ecx,TARGET_COLS
+     rep movsb
+
+     ret
+SetRowInScreen ENDP
+
 ; PROC - SetPixelInScreen
 ; PROC - RenderScreen
 
