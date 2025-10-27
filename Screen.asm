@@ -32,24 +32,6 @@ InitScreen PROC USES eax ecx
       ret
 InitScreen ENDP
 
-; Replaces the row at the given index with spaces
-WipeRowInScreen PROC USES eax ecx edi esi,
-     rowIndex:BYTE ; Unsigned int representing the index of the row to wipe
-
-     ; Calculate offset
-     movzx eax,rowIndex
-     imul  eax,ROW_SIZE
-
-     ; Move bytes from blankRow pos to eax pos
-     cld
-     mov esi,OFFSET blankRow
-     lea edi,screenBuffer[eax]
-     mov ecx,TARGET_COLS
-     rep movsb
-
-     ret
-WipeRowInScreen ENDP
-
 ; Plucks TARGET_COLS bytes from the given text and sets 
 ; the row at the given index to those bytes.
 ; THIS PROCEDURE DOES NOT CHECK FOR STRING LENGTH
@@ -70,6 +52,15 @@ SetRowInScreen PROC USES eax ecx edi esi,
 
      ret
 SetRowInScreen ENDP
+
+; Replaces the row at the given index with spaces
+WipeRowInScreen PROC USES eax ecx edi esi,
+     rowIndex:BYTE ; Unsigned int representing the index of the row to wipe
+
+     INVOKE SetRowInScreen, rowIndex, OFFSET blankRow
+
+     ret
+WipeRowInScreen ENDP
 
 ; PROC - SetPixelInScreen
 ; PROC - RenderScreen
