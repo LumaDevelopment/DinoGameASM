@@ -9,10 +9,30 @@ BUFFER_SIZE = TARGET_ROWS * ROW_SIZE
 
 .data
 screenBuffer BYTE BUFFER_SIZE DUP(?)
-blankRow     BYTE TARGET_COLS DUP(' '),0dh,0ah
+blankRow     BYTE TARGET_COLS DUP(' ')
 
 .code
 
+; Sets the last two bytes of every row in 
+; screenBuffer to 0dh,0ah. None of the other 
+; procedures in this file should affect the 
+; last two bytes of every row, so we should 
+; never have to do this again
+InitScreen PROC USES eax ecx
+     mov ecx,TARGET_ROWS
+     mov eax,OFFSET screenBuffer
+     add eax,TARGET_COLS ; Point to first CRLF position
+
+     InitRow:
+          mov BYTE PTR [eax],0dh
+          mov BYTE PTR [eax+1],0ah
+          add eax,ROW_SIZE
+          loop InitRow
+
+      ret
+InitScreen ENDP
+
+; Replaces the row at the given index with spaces
 WipeRowInScreen PROC USES eax ecx edi esi,
      rowIndex:BYTE ; Unsigned int representing the index of the row to wipe
 
@@ -24,13 +44,12 @@ WipeRowInScreen PROC USES eax ecx edi esi,
      cld
      mov esi,OFFSET blankRow
      lea edi,screenBuffer[eax]
-     mov ecx,ROW_SIZE
+     mov ecx,TARGET_COLS
      rep movsb
 
      ret
 WipeRowInScreen ENDP
 
-; PROC - WipeRowInScreen
 ; PROC - SetRowInScreen
 ; PROC - SetPixelInScreen
 ; PROC - RenderScreen
