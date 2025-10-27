@@ -62,7 +62,29 @@ WipeRowInScreen PROC USES eax ecx edi esi,
      ret
 WipeRowInScreen ENDP
 
-; PROC - SetPixelInScreen
+; Sets the pixel at the given row and column to 
+; the character at the location of the given 
+; pointer. Will be used for drawing the dino 
+; and obstacles.
+SetPixelInScreen PROC USES eax ebx esi,
+     rowIndex:BYTE,
+     colIndex:BYTE,
+     charPointer: PTR BYTE ; Pointer to the byte to set at the given pixel in the screen
+
+     ; Calculate offset in screen buffer
+     movzx eax,rowIndex
+     imul  eax,ROW_SIZE
+     movzx ebx,colIndex ; avoid sign-extension
+     add   eax,ebx
+
+     ; Write 1 byte from charPointer into screenBuffer[eax]
+     mov esi,charPointer
+     mov bl,[esi] ; Already reserved EBX for offset calculation
+     mov screenBuffer[eax],bl
+
+     ret
+SetPixelInScreen ENDP
+
 ; PROC - RenderScreen
 
 END
