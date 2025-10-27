@@ -2,9 +2,6 @@
 
 INCLUDE DinoGame.inc
 
-TARGET_ROWS = 30
-TARGET_COLS = 120
-
 .code
 
 main PROC

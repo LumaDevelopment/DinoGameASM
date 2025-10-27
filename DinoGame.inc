@@ -1,6 +1,12 @@
 INCLUDE Irvine32.inc
 INCLUDE Macros.inc
 
+; Moved here because needs to be accessible 
+; by the Screen file
+
+TARGET_ROWS = 30
+TARGET_COLS = 120
+
 ; Utilities.asm
 
 PrintCoordinate PROTO,
