@@ -4,10 +4,8 @@ INCLUDE DinoGame.inc
 
 .data
 
-consoleSizeDNMMsg      BYTE "Console size (Rows, Col) does not match target!",0
 consoleSizeTargetName  BYTE "Target",0
 consoleSizeActualName  BYTE "Actual",0
-consoleSizePromptMsg   BYTE "Please resize the console window and press any key to continue!",0
 
 .code
 
@@ -45,9 +43,7 @@ ConsoleSizePrompt PROC USES eax ebx edx,
 		je   CorrectConsoleSize ; Console size is correct
 
 		; Notify user that console size does not match
-		mov  edx, OFFSET consoleSizeDNMMsg
-		call WriteString
-		call Crlf
+		mWriteLn <"Console size (Rows, Col) does not match target!">
 
 		; Print target console size
 		INVOKE PrintCoordinate, ADDR consoleSizeTargetName, targetRows, targetCols
@@ -62,9 +58,7 @@ ConsoleSizePrompt PROC USES eax ebx edx,
 		INVOKE PrintCoordinate, ADDR consoleSizeActualName, eax, ebx
 
 		; Prompt the user to resize the console
-		mov  edx, OFFSET consoleSizePromptMsg
-		call WriteString
-		call Crlf
+		mWriteLn <"Please resize the console window and press any key to continue!">
 		call Crlf
 
 		; Wait for user to press a key, then try again

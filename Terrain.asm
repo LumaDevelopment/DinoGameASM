@@ -128,7 +128,7 @@ IncrementTerrain PROC USES eax ebx ecx edx esi edi
           ; Set 1200th byte for that layer
           mov eax, ebx
           imul eax, TERRAIN_LAYER_LEN
-          add eax, 1199
+          add eax, TERRAIN_LAYER_LEN - 1
           mov dl, incTerrainByte
           mov terrain[eax], dl
 

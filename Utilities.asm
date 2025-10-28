@@ -3,12 +3,6 @@
 
 INCLUDE DinoGame.inc
 
-.data
-
-printCoordinatePrefix BYTE ": (",0 ; Text printed after the label and before X
-printCoordinateSep    BYTE ", ",0  ; Text printed between X and Y
-printCoordinateSuffix BYTE ")",0   ; Text printed after Y
-
 .code
 
 ; Given the label for a coordinate, the X value, 
@@ -21,17 +15,13 @@ PrintCoordinate PROC USES eax edx,
 
 	mov  edx, coordLabel
 	call WriteString
-	mov  edx, OFFSET printCoordinatePrefix
-	call WriteString
+	mWrite <": (">
 	mov  eax, X
 	call WriteDec
-	mov  edx, OFFSET printCoordinateSep
-	call WriteString
+	mWrite <", ">
 	mov  eax, Y
 	call WriteDec
-	mov  edx, OFFSET printCoordinateSuffix
-	call WriteString
-	call Crlf
+	mWriteLn <")">
 
 	ret
 PrintCoordinate ENDP
