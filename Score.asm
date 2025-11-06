@@ -49,12 +49,7 @@ GetScore PROC USES ebx edx
           mov eax,endTime
           sub eax,startTime
 
-          ; Divide ms elapsed to get score
-          mov edx,0  ; Clear upper half of dividend
-          mov ebx,TIME_DIVISOR ; Load divisor
-          div ebx
-
-          jmp EndOfProcedure
+          jmp ScoreDivision
      ComplexCalc:
           ; Get distance between start time and max
           mov eax,0FFFFFFFFh
@@ -63,14 +58,15 @@ GetScore PROC USES ebx edx
           ; Add end time to get total elapsed time
           add eax,endTime
 
+          jmp ScoreDivision
+     EdgeCase:
+          mov eax,0 ; Score = 0
+          jmp EndOfProcedure
+     ScoreDivision:
           ; Divide ms elapsed to get score
           mov edx,0 ; Clear upper half of dividend
           mov ebx,TIME_DIVISOR ; Load divisor
           div ebx
-
-          jmp EndOfProcedure
-     EdgeCase:
-          mov eax,0 ; Score = 0
      EndOfProcedure:
           ret
 GetScore ENDP
