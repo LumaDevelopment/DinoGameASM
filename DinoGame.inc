@@ -1,11 +1,25 @@
 INCLUDE Irvine32.inc
 INCLUDE Macros.inc
 
-; Moved here because needs to be accessible 
-; by the Screen file
+; SCREEN SIZE CONSTANTS
 
 TARGET_ROWS = 30
 TARGET_COLS = 120
+
+; TYPES
+
+Coordinate STRUCT
+     X BYTE ?
+     Y BYTE ?
+Coordinate ENDS
+
+; The physical representation of a given sprite.
+; Used for collision calculations
+BoundingBox STRUCT
+     Position  Coordinate <>
+     BoxWidth  BYTE       ?
+     BoxHeight BYTE       ?
+BoundingBox ENDS
 
 ; Score.asm
 
@@ -21,6 +35,12 @@ PrintCoordinate PROTO,
      coordLabel:PTR BYTE,
      X:DWORD,
      Y:DWORD
+
+; Physics.asm
+
+AreBoundingBoxesColliding PROTO,
+     boxOne:BoundingBox,
+     boxTwo:BoundingBox
 
 ; ConsoleSizeMgmt.asm
 
