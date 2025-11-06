@@ -38,8 +38,7 @@ dino2 BYTE "          ##########","n",
 ; Jumping data
 
 lastJumpStarted DWORD 0
-jumpCurve       BYTE  1,1,1,1,1,2,2,2,2,2,1,1,1,1,1
-jumpLen         DWORD LENGTHOF jumpCurve
+jumpCurve       BYTE  1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9,9,9,9,9,9,9,9,9,9,8,8,7,7,6,6,5,5,4,4,3,3,2,2,1,1
 
 .code
 
@@ -171,7 +170,7 @@ GetCurrentJumpHeight PROC USES ecx,
      sub ecx,lastJumpStarted
 
      ; Determine whether the dino is off the ground or not
-     cmp ecx,jumpLen
+     cmp ecx,LENGTHOF jumpCurve
      jae OnGround
 
      OffGround:
@@ -191,10 +190,14 @@ GetCurrentJumpHeight ENDP
 UserPressedJump PROC USES ecx,
      currentTick:DWORD
 
+     ; Can definitely jump if lastJumpStarted = 0
+     cmp lastJumpStarted,0
+     je CanJumpAgain
+
      ; Calc ticks elapsed since last jump
      mov ecx,currentTick
      sub ecx,lastJumpStarted
-     cmp ecx,jumpLen
+     cmp ecx,LENGTHOF jumpCurve
      jbe EndOfProcedure ; cannot jump again
 
      CanJumpAgain:
