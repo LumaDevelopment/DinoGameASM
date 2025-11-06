@@ -185,4 +185,25 @@ GetCurrentJumpHeight PROC USES ecx,
           ret
 GetCurrentJumpHeight ENDP
 
+; Procedure to be called whenever the user presses jump.
+; Changes lastJumpStarted to currentTick if currentTick
+; - lastJumpStarted > jumpLen
+UserPressedJump PROC USES ecx,
+     currentTick:DWORD
+
+     ; Calc ticks elapsed since last jump
+     mov ecx,currentTick
+     sub ecx,lastJumpStarted
+     cmp ecx,jumpLen
+     jbe EndOfProcedure ; cannot jump again
+
+     CanJumpAgain:
+          ; Update when the last jump started
+          mov ecx,currentTick
+          mov lastJumpStarted,ecx
+
+     EndOfProcedure:
+          ret
+UserPressedJump ENDP
+
 END

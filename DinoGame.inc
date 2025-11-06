@@ -92,3 +92,6 @@ FlipCurrentDino PROTO
 
 GetCurrentJumpHeight PROTO,
      currentTick:DWORD
+
+UserPressedJump PROTO,
+     currentTick:DWORD
