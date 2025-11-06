@@ -2,6 +2,8 @@
 
 INCLUDE DinoGame.inc
 
+TIME_DIVISOR = 50 ; What to divide elapsed ms by to get score
+
 .data
 
 startTime DWORD ?
@@ -15,13 +17,13 @@ endTime   DWORD ?
 ; with GetTickCount instead of GetMseconds because it 
 ; resets less frequently than every day.
 
-RecordStartTime PROC USES eax
+RecordStartTime PROC USES eax edx
      INVOKE GetTickCount
      mov startTime,eax
      ret
 RecordStartTime ENDP
 
-RecordEndTime PROC USES eax
+RecordEndTime PROC USES eax edx
      INVOKE GetTickCount
      mov endTime,eax
      ret
@@ -49,7 +51,7 @@ GetScore PROC USES ebx edx
 
           ; Divide ms elapsed by 10 to get score
           mov edx,0  ; Clear upper half of dividend
-          mov ebx,10 ; Load divisor
+          mov ebx,TIME_DIVISOR ; Load divisor
           div ebx
 
           jmp EndOfProcedure
@@ -67,7 +69,7 @@ GetScore PROC USES ebx edx
           mov edx,0
 
           ; Load divisor
-          mov ebx,10
+          mov ebx,TIME_DIVISOR
 
           ; Division!
           div ebx
