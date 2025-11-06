@@ -13,6 +13,8 @@ RecordStartTime PROTO
 
 RecordEndTime PROTO
 
+GetScore PROTO
+
 ; Utilities.asm
 
 PrintCoordinate PROTO,
