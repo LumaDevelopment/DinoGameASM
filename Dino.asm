@@ -36,7 +36,8 @@ dino2 BYTE "          ##########","n",
 .code
 
 DrawDino PROC USES eax ebx ecx edx esi,
-     dinoAddr:PTR BYTE
+     dinoAddr:PTR BYTE,
+     distanceFromGround:BYTE
 
      ; Keep track of rows using EAX, 
      ; columns using EBX, and raw 
@@ -70,10 +71,11 @@ DrawDino PROC USES eax ebx ecx edx esi,
 
      DrawPixel:
           ; Use high byte of DX for row index
-          mov dh, al
+          mov dh,al
           add dh,TARGET_ROWS
           sub dh,DINO_POS_Y
           sub dh,DINO_HEIGHT
+          sub dh,distanceFromGround
 
           ; Use ECX for column index
           mov cl,bl
@@ -83,7 +85,7 @@ DrawDino PROC USES eax ebx ecx edx esi,
           push esi
           add esi,dinoAddr
 
-          ; Save EAX, because somehow it is being modified
+          ; Save EAX, because it gets modified by the INVOKE
           push eax
 
           INVOKE SetPixelInScreen, dh, cl, esi
@@ -110,17 +112,19 @@ DrawDino PROC USES eax ebx ecx edx esi,
 DrawDino ENDP
 
 ; Draws either dino 1 or 2, depending on the current dino
-DrawCurrentDino PROC
+DrawCurrentDino PROC,
+     distanceFromGround: BYTE
+
      cmp currentDino,1
      je DrawDinoOne
      jmp DrawDinoTwo
 
      DrawDinoOne:
-          INVOKE DrawDino, ADDR dino1
+          INVOKE DrawDino, ADDR dino1, distanceFromGround
           jmp EndOfProcedure
 
      DrawDinoTwo:
-          INVOKE DrawDino, ADDR dino2
+          INVOKE DrawDino, ADDR dino2, distanceFromGround
 
      EndOfProcedure:
           ret

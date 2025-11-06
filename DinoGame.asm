@@ -43,7 +43,7 @@ main PROC
 	RenderStep:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
-		call DrawCurrentDino
+		INVOKE DrawCurrentDino, 0
 		call RenderScreen
 
 		; Infinitely looping terrain

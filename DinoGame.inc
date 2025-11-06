@@ -82,8 +82,10 @@ IncrementTerrain PROTO
 ; Dino.asm
 
 DrawDino PROTO,
-     dinoAddr:PTR BYTE
+     dinoAddr:PTR BYTE,
+     distanceFromGround:BYTE
 
-DrawCurrentDino PROTO
+DrawCurrentDino PROTO,
+     distanceFromGround: BYTE
 
 FlipCurrentDino PROTO
