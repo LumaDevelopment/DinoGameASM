@@ -7,6 +7,8 @@ DINO_HEIGHT = 11
 
 .data
 
+; Drawing data
+
 currentDino BYTE 1
 
 dino1 BYTE "          ##########","n",
@@ -32,6 +34,12 @@ dino2 BYTE "          ##########","n",
            "   #########","n",
            "     ### ##","n",
            "          ##",0
+
+; Jumping data
+
+lastJumpStarted DWORD 0
+jumpCurve       BYTE  1,1,1,1,1,2,2,2,2,2,1,1,1,1,1
+jumpLen         DWORD LENGTHOF jumpCurve
 
 .code
 
@@ -113,7 +121,7 @@ DrawDino ENDP
 
 ; Draws either dino 1 or 2, depending on the current dino
 DrawCurrentDino PROC,
-     distanceFromGround: BYTE
+     distanceFromGround:BYTE
 
      cmp currentDino,1
      je DrawDinoOne
@@ -146,5 +154,35 @@ FlipCurrentDino PROC
      EndOfProcedure:
           ret
 FlipCurrentDino ENDP
+
+; Get the current height of the dino off the ground 
+; given `lastJumpStarted`.
+; Returns in AL.
+GetCurrentJumpHeight PROC USES ecx,
+     currentTick:DWORD
+
+     ; If lastJumpStarted = 0, assume dino on ground
+     cmp lastJumpStarted,0
+     je OnGround
+
+     ; Otherwise, calculate number of ticks elapsed 
+     ; since last jump
+     mov ecx,currentTick
+     sub ecx,lastJumpStarted
+
+     ; Determine whether the dino is off the ground or not
+     cmp ecx,jumpLen
+     jae OnGround
+
+     OffGround:
+          mov al, BYTE PTR jumpCurve[ecx]
+          jmp EndOfProcedure
+
+     OnGround:
+          mov al,0
+
+     EndOfProcedure:
+          ret
+GetCurrentJumpHeight ENDP
 
 END

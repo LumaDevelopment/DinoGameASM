@@ -43,7 +43,10 @@ main PROC
 	RenderStep:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
-		INVOKE DrawCurrentDino, 0
+
+		INVOKE GetCurrentJumpHeight, ebx
+		INVOKE DrawCurrentDino, al
+
 		call RenderScreen
 
 		; Infinitely looping terrain

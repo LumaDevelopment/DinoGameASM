@@ -89,3 +89,6 @@ DrawCurrentDino PROTO,
      distanceFromGround: BYTE
 
 FlipCurrentDino PROTO
+
+GetCurrentJumpHeight PROTO,
+     currentTick:DWORD
