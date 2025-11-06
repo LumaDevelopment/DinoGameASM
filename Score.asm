@@ -30,12 +30,17 @@ RecordEndTime ENDP
 ; Calculate score based on start and end time.
 ; Returns score in EAX.
 GetScore PROC USES ebx edx
-     mov eax,endTime
-     cmp startTime,eax
+     mov eax,startTime
+     cmp eax,endTime
+
      ; If startTime > endTime, then tick counter reset
      ; to 0 while the user was playing, making 
      ; calculations more complex
      ja ComplexCalc
+
+     ; startTime should not equal end time, but just 
+     ; in case
+     je EdgeCase
 
      SimpleCalc:
           ; Calculate difference between start and end time
@@ -46,8 +51,32 @@ GetScore PROC USES ebx edx
           mov edx,0  ; Clear upper half of dividend
           mov ebx,10 ; Load divisor
           div ebx
+
+          jmp EndOfProcedure
      ComplexCalc:
-     ret
+          ; Move max value into EAX
+          mov eax,0FFFFFFFFh
+
+          ; Subtract start time
+          sub eax,startTime
+
+          ; Add end time
+          add eax,endTime
+
+          ; Clear upper half of dividend
+          mov edx,0
+
+          ; Load divisor
+          mov ebx,10
+
+          ; Division!
+          div ebx
+
+          jmp EndOfProcedure
+     EdgeCase:
+          mov eax,0 ; Score = 0
+     EndOfProcedure:
+          ret
 GetScore ENDP
 
 END
