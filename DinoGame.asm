@@ -26,8 +26,21 @@ main PROC
 	; Start keeping score
 	call RecordStartTime
 
+	; Use EBX to get number of renders
+	mov ebx,0
+
 	; Test rotating terrain
-	TerrainLoop:
+	RenderLoop:
+		; Decide whether to flip the dino
+		mov eax,ebx
+		mov edx,0
+		mov ecx,10
+		div ecx
+		cmp edx,0
+		jne RenderStep
+		call FlipCurrentDino
+
+	RenderStep:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
 		call DrawCurrentDino
@@ -40,7 +53,8 @@ main PROC
 		mov eax, 10
 		call Delay
 
-		jmp TerrainLoop
+		inc ebx
+		jmp RenderLoop
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:
