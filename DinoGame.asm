@@ -9,9 +9,6 @@ consoleTitle BYTE "chrome://dino",0
 .code
 
 main PROC
-	; Set console title
-	INVOKE SetConsoleTitle, ADDR consoleTitle
-
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
@@ -31,6 +28,9 @@ main PROC
 
 	; Test rotating terrain
 	RenderLoop:
+		; Set console title
+		INVOKE SetConsoleTitle, ADDR consoleTitle
+
 		; Decide whether to flip the dino
 		mov eax,ebx
 		mov edx,0
@@ -57,8 +57,10 @@ main PROC
 		call Delay
 
 		; Determine if there has been any user input
+		push ebx
 		call ReadKey
 		jz EndOfRender ; Do not do anything else if zero flag is clear
+		pop ebx
 		INVOKE UserPressedJump,ebx
 
 	EndOfRender:
