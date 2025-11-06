@@ -2,9 +2,16 @@
 
 INCLUDE DinoGame.inc
 
+.data
+
+consoleTitle BYTE "chrome://dino",0
+
 .code
 
 main PROC
+	; Set console title
+	INVOKE SetConsoleTitle, ADDR consoleTitle
+
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
