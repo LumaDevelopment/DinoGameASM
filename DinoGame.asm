@@ -23,6 +23,9 @@ main PROC
 	cmp bl, 1
 	jne FailedToLoadTerrain ; Attempt failed
 
+	; Start keeping score
+	call RecordStartTime
+
 	; Test rotating terrain
 	TerrainLoop:
 		; Render this frame

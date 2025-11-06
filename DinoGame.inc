@@ -7,6 +7,12 @@ INCLUDE Macros.inc
 TARGET_ROWS = 30
 TARGET_COLS = 120
 
+; Score.asm
+
+RecordStartTime PROTO
+
+RecordEndTime PROTO
+
 ; Utilities.asm
 
 PrintCoordinate PROTO,
