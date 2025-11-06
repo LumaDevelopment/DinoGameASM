@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <MASM Include="Dino.asm" />
     <MASM Include="DinoGame.asm" />
     <MASM Include="ConsoleSizeMgmt.asm" />
     <MASM Include="Physics.asm" />

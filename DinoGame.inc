@@ -78,3 +78,10 @@ WriteTerrain PROTO,
      screenLength:BYTE
 
 IncrementTerrain PROTO
+
+; Dino.asm
+
+DrawDino PROTO,
+     dinoAddr:PTR BYTE
+
+DrawCurrentDino PROTO

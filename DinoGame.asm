@@ -30,6 +30,7 @@ main PROC
 	TerrainLoop:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
+		call DrawCurrentDino
 		call RenderScreen
 
 		; Infinitely looping terrain
