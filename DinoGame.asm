@@ -56,6 +56,12 @@ main PROC
 		mov eax, 10
 		call Delay
 
+		; Determine if there has been any user input
+		call ReadKey
+		jz EndOfRender ; Do not do anything else if zero flag is clear
+		INVOKE UserPressedJump,ebx
+
+	EndOfRender:
 		inc ebx
 		jmp RenderLoop
 	jmp EndDinoGame
