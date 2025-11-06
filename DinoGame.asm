@@ -2,6 +2,10 @@
 
 INCLUDE DinoGame.inc
 
+.data
+
+consoleTitle BYTE "chrome://dino",0
+
 .code
 
 main PROC
@@ -16,10 +20,33 @@ main PROC
 	cmp bl, 1
 	jne FailedToLoadTerrain ; Attempt failed
 
+	; Start keeping score
+	call RecordStartTime
+
+	; Use EBX to get number of renders
+	mov ebx,0
+
 	; Test rotating terrain
-	TerrainLoop:
+	RenderLoop:
+		; Set console title
+		INVOKE SetConsoleTitle, ADDR consoleTitle
+
+		; Decide whether to flip the dino
+		mov eax,ebx
+		mov edx,0
+		mov ecx,10
+		div ecx
+		cmp edx,0
+		jne RenderStep
+		call FlipCurrentDino
+
+	RenderStep:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
+
+		INVOKE GetCurrentJumpHeight, ebx
+		INVOKE DrawCurrentDino, al
+
 		call RenderScreen
 
 		; Infinitely looping terrain
@@ -29,7 +56,16 @@ main PROC
 		mov eax, 10
 		call Delay
 
-		jmp TerrainLoop
+		; Determine if there has been any user input
+		push ebx
+		call ReadKey
+		jz EndOfRender ; Do not do anything else if zero flag is clear
+		pop ebx
+		INVOKE UserPressedJump,ebx
+
+	EndOfRender:
+		inc ebx
+		jmp RenderLoop
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:
