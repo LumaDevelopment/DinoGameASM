@@ -85,3 +85,5 @@ DrawDino PROTO,
      dinoAddr:PTR BYTE
 
 DrawCurrentDino PROTO
+
+FlipCurrentDino PROTO

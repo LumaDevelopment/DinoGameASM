@@ -109,8 +109,7 @@ DrawDino PROC USES eax ebx ecx edx esi,
           ret
 DrawDino ENDP
 
-; Draws either dino 1 or 2, depending on the current value
-; of currentDino, then swaps the value to the other dino
+; Draws either dino 1 or 2, depending on the current dino
 DrawCurrentDino PROC
      cmp currentDino,1
      je DrawDinoOne
@@ -118,16 +117,30 @@ DrawCurrentDino PROC
 
      DrawDinoOne:
           INVOKE DrawDino, ADDR dino1
-          inc currentDino
           jmp EndOfProcedure
 
      DrawDinoTwo:
           INVOKE DrawDino, ADDR dino2
-          dec currentDino
-          jmp EndOfProcedure
 
      EndOfProcedure:
           ret
 DrawCurrentDINO ENDP
+
+; If current dino is 1, flips it to dino 2, and vice versa.
+FlipCurrentDino PROC
+     cmp currentDino,1
+     je  FlipToDinoTwo
+     jmp FlipToDinoOne
+
+     FlipToDinoTwo:
+          inc currentDino
+          jmp EndOfProcedure
+
+     FlipToDinoOne:
+          dec currentDino
+
+     EndOfProcedure:
+          ret
+FlipCurrentDino ENDP
 
 END
