@@ -17,17 +17,24 @@ endTime   DWORD ?
 ; with GetTickCount instead of GetMseconds because it 
 ; resets less frequently than every day.
 
-RecordStartTime PROC USES eax edx
+RecordStartTime PROC
+     pushad
      INVOKE GetTickCount
      mov startTime,eax
+     popad
      ret
 RecordStartTime ENDP
 
-RecordEndTime PROC USES eax edx
+RecordEndTime PROC
+     pushad
      INVOKE GetTickCount
      mov endTime,eax
+     popad
      ret
 RecordEndTime ENDP
+
+; TODO Abstract time calculation part of GetScore
+; into a CalculateTimeDelta in Utilities.
 
 ; Calculate score based on start and end time.
 ; Returns score in EAX.

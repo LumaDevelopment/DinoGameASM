@@ -29,7 +29,9 @@ main PROC
 	; Main loop
 	GameTick:
 		; Set console title
+		pushad
 		INVOKE SetConsoleTitle, ADDR consoleTitle
+		popad
 
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
@@ -47,7 +49,7 @@ main PROC
 		INVOKE DinoOnTick, ebx, al
 
 		; Delay for better visibility
-		mov eax, 10
+		mov eax, 1 ; Does not matter when small enough
 		call Delay
 
 		; Increment # of ticks, start next tick
