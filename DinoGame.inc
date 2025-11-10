@@ -31,31 +31,6 @@ BoundingBox ENDS
 
 ; ----- PROCEDURES -----
 
-; Score.asm
-
-RecordStartTime PROTO
-
-RecordEndTime PROTO
-
-GetScore PROTO
-
-; Utilities.asm
-
-PrintCoordinate PROTO,
-     coordLabel:PTR BYTE,
-     X:DWORD,
-     Y:DWORD
-
-; Physics.asm
-
-AreBoundingBoxesColliding PROTO,
-     boxOne:BoundingBox,
-     boxTwo:BoundingBox
-
-; UserInput.asm
-
-GetUserInput PROTO
-
 ; ConsoleSizeMgmt.asm
 
 VerifyConsoleSize PROTO,
@@ -65,6 +40,38 @@ VerifyConsoleSize PROTO,
 ConsoleSizePrompt PROTO,
      targetRows:BYTE,
      targetCols:BYTE
+
+; Dino.asm
+
+DrawDino PROTO,
+     dinoAddr:PTR BYTE,
+     distanceFromGround:BYTE
+
+DrawCurrentDino PROTO,
+     distanceFromGround: BYTE
+
+FlipCurrentDino PROTO
+
+GetCurrentJumpHeight PROTO,
+     currentTick:DWORD
+
+DinoOnTick PROTO,
+     currentTick:DWORD,
+     userInput:BYTE
+
+; Physics.asm
+
+AreBoundingBoxesColliding PROTO,
+     boxOne:BoundingBox,
+     boxTwo:BoundingBox
+
+; Score.asm
+
+RecordStartTime PROTO
+
+RecordEndTime PROTO
+
+GetScore PROTO
 
 ; Screen.asm
 
@@ -93,20 +100,13 @@ WriteTerrain PROTO,
 
 IncrementTerrain PROTO
 
-; Dino.asm
+; UserInput.asm
 
-DrawDino PROTO,
-     dinoAddr:PTR BYTE,
-     distanceFromGround:BYTE
+GetUserInput PROTO
 
-DrawCurrentDino PROTO,
-     distanceFromGround: BYTE
+; Utilities.asm
 
-FlipCurrentDino PROTO
-
-GetCurrentJumpHeight PROTO,
-     currentTick:DWORD
-
-DinoOnTick PROTO,
-     currentTick:DWORD,
-     userInput:BYTE
+PrintCoordinate PROTO,
+     coordLabel:PTR BYTE,
+     X:DWORD,
+     Y:DWORD
