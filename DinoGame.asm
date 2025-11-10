@@ -12,7 +12,7 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
-	; Initialize screen
+	; Initialize screen buffer
 	call InitScreen
 
 	; Attempt to load terrain from file into array
@@ -23,24 +23,14 @@ main PROC
 	; Start keeping score
 	call RecordStartTime
 
-	; Use EBX to get number of renders
+	; Use EBX to get number of ticks
 	mov ebx,0
 
-	; Test rotating terrain
-	RenderLoop:
+	; Main loop
+	GameTick:
 		; Set console title
 		INVOKE SetConsoleTitle, ADDR consoleTitle
 
-		; Decide whether to flip the dino
-		mov eax,ebx
-		mov edx,0
-		mov ecx,10
-		div ecx
-		cmp edx,0
-		jne RenderStep
-		call FlipCurrentDino
-
-	RenderStep:
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
 
@@ -49,22 +39,20 @@ main PROC
 
 		call RenderScreen
 
-		; Infinitely looping terrain
-		call IncrementTerrain
+		; Get user input for per-tick procedures
+		call GetUserInput
 
-		; Delay so it can be visible
+		; Execute per-tick procedures for terrain and dino
+		call IncrementTerrain
+		INVOKE DinoOnTick, ebx, al
+
+		; Delay for better visibility
 		mov eax, 10
 		call Delay
 
-		; Determine if there has been any user input
-		call GetUserInput
-		cmp eax,1
-		jne EndOfRender
-		INVOKE UserPressedJump,ebx
-
-	EndOfRender:
+		; Increment # of ticks, start next tick
 		inc ebx
-		jmp RenderLoop
+		jmp GameTick
 	jmp EndDinoGame
 
 	FailedToLoadTerrain:

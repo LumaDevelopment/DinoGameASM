@@ -5,6 +5,8 @@ DINO_POS_Y = 1
 DINO_WIDTH = 20
 DINO_HEIGHT = 11
 
+TICKS_PER_DINO_SPRITE = 10
+
 .data
 
 ; Drawing data
@@ -184,29 +186,48 @@ GetCurrentJumpHeight PROC USES ecx,
           ret
 GetCurrentJumpHeight ENDP
 
-; Procedure to be called whenever the user presses jump.
-; Changes lastJumpStarted to currentTick if currentTick
-; - lastJumpStarted > jumpLen
-UserPressedJump PROC USES ecx,
-     currentTick:DWORD
+; Procedure that handles any changes that should be 
+; made to the dino spirte or current action on any 
+; given tick
+DinoOnTick PROC USES eax ecx edx,
+     currentTick:DWORD,
+     userInput:BYTE
 
-     ; Can definitely jump if lastJumpStarted = 0
-     cmp lastJumpStarted,0
-     je CanJumpAgain
+     DetermineFlip:
+          ; First order of business is to determine whether
+          ; to flip the dino sprite
+          mov eax,currentTick
+          mov edx,0
+          mov ecx,TICKS_PER_DINO_SPRITE
+          div ecx
+          cmp edx,0
+          jne UserInputCheck
+          call FlipCurrentDino
 
-     ; Calc ticks elapsed since last jump
-     mov ecx,currentTick
-     sub ecx,lastJumpStarted
-     cmp ecx,LENGTHOF jumpCurve
-     jbe EndOfProcedure ; cannot jump again
+     UserInputCheck:
+          ; Determine whether the user wants the dino 
+          ; to jump
+          cmp userInput,DINO_JUMP
+          jne EndOfProcedure
+
+     OnJumpRequested:
+          ; Can definitely jump if lastJumpStarted = 0
+          cmp lastJumpStarted,0
+          je CanJumpAgain
+
+          ; Calc ticks elapsed since last jump
+          mov ecx,currentTick
+          sub ecx,lastJumpStarted
+          cmp ecx,LENGTHOF jumpCurve
+          jbe EndOfProcedure ; cannot jump again
 
      CanJumpAgain:
-          ; Update when the last jump started
+          ; Update when last jump started
           mov ecx,currentTick
           mov lastJumpStarted,ecx
 
      EndOfProcedure:
           ret
-UserPressedJump ENDP
+DinoOnTick ENDP
 
 END

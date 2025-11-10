@@ -1,6 +1,12 @@
 INCLUDE Irvine32.inc
 INCLUDE Macros.inc
 
+; ----- USER INPUT -----
+
+NO_DINO_INPUT = 0
+DINO_JUMP = 1
+DINO_CROUCH = 2
+
 ; ----- SCREEN SIZE -----
 
 ; Maybe can be eliminated at some point?
@@ -101,5 +107,6 @@ FlipCurrentDino PROTO
 GetCurrentJumpHeight PROTO,
      currentTick:DWORD
 
-UserPressedJump PROTO,
-     currentTick:DWORD
+DinoOnTick PROTO,
+     currentTick:DWORD,
+     userInput:BYTE

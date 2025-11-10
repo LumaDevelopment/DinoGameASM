@@ -3,10 +3,6 @@
 
 INCLUDE DinoGame.inc
 
-NO_DINO_INPUT = 0
-DINO_JUMP = 1
-DINO_CROUCH = 2
-
 .code
 
 ; Determines if the user has commanded the dino, 
