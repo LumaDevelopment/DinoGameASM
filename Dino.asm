@@ -254,9 +254,15 @@ DinoOnTick PROC USES eax ecx edx,
           ; Determine whether the user wants the dino 
           ; to jump
           cmp userInput,DINO_JUMP
-          jne EndOfProcedure
+          je OnJumpRequested
+          cmp userInput,DINO_CROUCH
+          je OnCrouchRequested
+          jmp EndOfProcedure
 
      OnJumpRequested:
+          ; TODO MOVE
+          mov isDinoCrouching,0
+
           ; Can definitely jump if lastJumpStarted = 0
           cmp lastJumpStarted,0
           je CanJumpAgain
@@ -271,6 +277,17 @@ DinoOnTick PROC USES eax ecx edx,
           ; Update when last jump started
           mov ecx,currentTick
           mov lastJumpStarted,ecx
+          jmp EndOfProcedure
+
+     OnCrouchRequested:
+          ; Cannot crouch while jumping, so get
+          ; current jump height
+          INVOKE GetCurrentJumpHeight, currentTick
+          cmp al,0
+          jne EndOfProcedure ; dino is mid-jump
+
+          ; Activate crouch, set flag
+          mov isDinoCrouching,1
 
      EndOfProcedure:
           ret
