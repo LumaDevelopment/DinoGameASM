@@ -23,5 +23,4 @@ Score is milliseconds elapsed / 10
 - Pterodactyls
 - Ability to duck
 - Ability to restart game in same console window
-- `ConsoleSizePrompt` uses message boxes
 - Resizable
