@@ -60,7 +60,7 @@ jumpCurve       BYTE  1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9,9,9,9,9,9,9,9,9,9,8,
 
 ; Crouching data
 
-isCrouching BYTE 0
+isDinoCrouching BYTE 0
 
 .code
 
@@ -141,7 +141,8 @@ DrawDino PROC USES eax ebx ecx edx esi,
           ret
 DrawDino ENDP
 
-; Draws either dino 1 or 2, depending on the current dino
+; Draws the current dino sprite, factoring in `currentDino`
+; and whether the dino is currently crouching.
 DrawCurrentDino PROC,
      distanceFromGround:BYTE
 
@@ -150,11 +151,28 @@ DrawCurrentDino PROC,
      jmp DrawDinoTwo
 
      DrawDinoOne:
-          INVOKE DrawDino, ADDR dinoRunning1, DINO_RUNNING_HEIGHT, distanceFromGround
-          jmp EndOfProcedure
+          cmp isDinoCrouching,1
+          je DrawCrouchingDinoOne
+
+          DrawRunningDinoOne:
+               INVOKE DrawDino, ADDR dinoRunning1, DINO_RUNNING_HEIGHT, distanceFromGround
+               jmp EndOfProcedure
+
+          DrawCrouchingDinoOne:
+               INVOKE DrawDino, ADDR dinoCrouching1, DINO_CROUCHING_HEIGHT, distanceFromGround
+               jmp EndOfProcedure
 
      DrawDinoTwo:
-          INVOKE DrawDino, ADDR dinoRunning2, DINO_RUNNING_HEIGHT, distanceFromGround
+          cmp isDinoCrouching,1
+          je DrawCrouchingDinoTwo
+
+          DrawRunningDinoTwo:
+               INVOKE DrawDino, ADDR dinoRunning2, DINO_RUNNING_HEIGHT, distanceFromGround
+               jmp EndOfProcedure
+
+          DrawCrouchingDinoTwo:
+               INVOKE DrawDino, ADDR dinoCrouching2, DINO_CROUCHING_HEIGHT, distanceFromGround
+               jmp EndOfProcedure
 
      EndOfProcedure:
           ret
