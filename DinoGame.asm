@@ -49,7 +49,7 @@ main PROC
 		INVOKE DinoOnTick, ebx, al
 
 		; Delay for better visibility
-		mov eax, 1 ; Does not matter when small enough
+		mov eax, 1 ; Minimum real value is 10 ms
 		call Delay
 
 		; Increment # of ticks, start next tick
