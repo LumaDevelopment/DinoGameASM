@@ -2,7 +2,7 @@
 
 INCLUDE DinoGame.inc
 
-TIME_DIVISOR = 50 ; What to divide elapsed ms by to get score
+TIME_DIVISOR_FOR_SCORE = 50 ; What to divide elapsed ms by to get score
 
 .data
 
@@ -65,7 +65,7 @@ GetScore PROC USES ebx edx
      ScoreDivision:
           ; Divide ms elapsed to get score
           mov edx,0 ; Clear upper half of dividend
-          mov ebx,TIME_DIVISOR ; Load divisor
+          mov ebx,TIME_DIVISOR_FOR_SCORE ; Load divisor
           div ebx
      EndOfProcedure:
           ret

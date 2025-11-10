@@ -1,12 +1,14 @@
 INCLUDE Irvine32.inc
 INCLUDE Macros.inc
 
-; SCREEN SIZE CONSTANTS
+; ----- SCREEN SIZE -----
+
+; Maybe can be eliminated at some point?
 
 TARGET_ROWS = 30
 TARGET_COLS = 120
 
-; TYPES
+; ----- TYPES -----
 
 Coordinate STRUCT
      X BYTE ?
@@ -20,6 +22,8 @@ BoundingBox STRUCT
      BoxWidth  BYTE       ?
      BoxHeight BYTE       ?
 BoundingBox ENDS
+
+; ----- PROCEDURES -----
 
 ; Score.asm
 
@@ -41,6 +45,10 @@ PrintCoordinate PROTO,
 AreBoundingBoxesColliding PROTO,
      boxOne:BoundingBox,
      boxTwo:BoundingBox
+
+; UserInput.asm
+
+GetUserInput PROTO
 
 ; ConsoleSizeMgmt.asm
 

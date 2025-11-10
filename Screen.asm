@@ -5,12 +5,12 @@
 INCLUDE DinoGame.inc
 
 ROW_SIZE = TARGET_COLS + 2 ; space for CRLF
-BUFFER_SIZE = TARGET_ROWS * ROW_SIZE
+SCREEN_BUFFER_SIZE = TARGET_ROWS * ROW_SIZE
 
 .data
-screenBuffer BYTE BUFFER_SIZE DUP(?)
+screenBuffer BYTE SCREEN_BUFFER_SIZE DUP(?)
              BYTE 0 ; null-terminator
-blankRow     BYTE TARGET_COLS DUP(' ')
+blankRow     BYTE TARGET_COLS        DUP(' ')
 
 .code
 

@@ -57,10 +57,9 @@ main PROC
 		call Delay
 
 		; Determine if there has been any user input
-		push ebx
-		call ReadKey
-		jz EndOfRender ; Do not do anything else if zero flag is clear
-		pop ebx
+		call GetUserInput
+		cmp eax,1
+		jne EndOfRender
 		INVOKE UserPressedJump,ebx
 
 	EndOfRender:
