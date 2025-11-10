@@ -6,8 +6,8 @@ TIME_DIVISOR_FOR_SCORE = 50 ; What to divide elapsed ms by to get score
 
 .data
 
-startTime DWORD ?
-endTime   DWORD ?
+scoreStartTime DWORD ?
+scoreEndTime   DWORD ?
 
 .code
 
@@ -20,7 +20,7 @@ endTime   DWORD ?
 RecordStartTime PROC
      pushad
      INVOKE GetTickCount
-     mov startTime,eax
+     mov scoreStartTime,eax
      popad
      ret
 RecordStartTime ENDP
@@ -28,7 +28,7 @@ RecordStartTime ENDP
 RecordEndTime PROC
      pushad
      INVOKE GetTickCount
-     mov endTime,eax
+     mov scoreEndTime,eax
      popad
      ret
 RecordEndTime ENDP
@@ -36,7 +36,7 @@ RecordEndTime ENDP
 ; Calculate score based on start and end time.
 ; Returns score in EAX.
 GetScore PROC USES ebx edx
-     INVOKE CalculateTickDelta, startTime, endTime
+     INVOKE CalculateTickDelta, scoreStartTime, scoreEndTime
      cmp eax,0
      je EndOfProcedure ; Do not divide if EAX = 0
 
