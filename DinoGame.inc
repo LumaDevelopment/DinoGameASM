@@ -106,6 +106,10 @@ GetUserInput PROTO
 
 ; Utilities.asm
 
+CalculateTickDelta PROTO,
+     startTime:DWORD,
+     endTime:DWORD
+
 PrintCoordinate PROTO,
      coordLabel:PTR BYTE,
      X:DWORD,
