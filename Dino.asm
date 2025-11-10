@@ -2,8 +2,10 @@ INCLUDE DinoGame.inc
 
 DINO_POS_X = 2
 DINO_POS_Y = 1
-DINO_WIDTH = 20
-DINO_HEIGHT = 11
+DINO_RUNNING_WIDTH = 20
+DINO_RUNNING_HEIGHT = 11
+DINO_CROUCHING_WIDTH = 26
+DINO_CROUCHING_HEIGHT = 6
 
 TICKS_PER_DINO_SPRITE = 10
 
@@ -13,29 +15,43 @@ TICKS_PER_DINO_SPRITE = 10
 
 currentDino BYTE 1
 
-dino1 BYTE "          ##########","n",
-           "          ##########","n",
-           "          ##########","n",
-           "          ########","n",
-           "#      #######","n",
-           "###  ######### #","n",
-           "##############","n",
-           " ############","n",
-           "   #########","n",
-           "     ###  ###","n",
-           "     ##",0
+dinoRunning1 BYTE "          ##########","n",
+                  "          ##########","n",
+                  "          ##########","n",
+                  "          ########","n",
+                  "#      #######","n",
+                  "###  ######### #","n",
+                  "##############","n",
+                  " ############","n",
+                  "   #########","n",
+                  "     ###  ###","n",
+                  "     ##",0
 
-dino2 BYTE "          ##########","n",
-           "          ##########","n",
-           "          ##########","n",
-           "          ########","n",
-           "#      #######","n",
-           "###  ######### #","n",
-           "##############","n",
-           " ############","n",
-           "   #########","n",
-           "     ### ##","n",
-           "          ##",0
+dinoRunning2 BYTE "          ##########","n",
+                  "          ##########","n",
+                  "          ##########","n",
+                  "          ########","n",
+                  "#      #######","n",
+                  "###  ######### #","n",
+                  "##############","n",
+                  " ############","n",
+                  "   #########","n",
+                  "     ### ##","n",
+                  "          ##",0
+
+dinoCrouching1 BYTE "###   #########  ########","n",
+                    " #########################","n",
+                    "   #######################","n",
+                    "     ########### #######","n",
+                    "     #  ###   ##","n",
+                    "        ##",0
+
+dinoCrouching2 BYTE "###   #########  ########","n",
+                    " #########################","n",
+                    "   #######################","n",
+                    "     ########### #######","n",
+                    "     ###  ##  ##","n",
+                    "     ##",0
 
 ; Jumping data
 
@@ -83,7 +99,7 @@ DrawDino PROC USES eax ebx ecx edx esi,
           mov dh,al
           add dh,TARGET_ROWS
           sub dh,DINO_POS_Y
-          sub dh,DINO_HEIGHT
+          sub dh,DINO_RUNNING_HEIGHT
           sub dh,distanceFromGround
 
           ; Use ECX for column index
@@ -129,11 +145,11 @@ DrawCurrentDino PROC,
      jmp DrawDinoTwo
 
      DrawDinoOne:
-          INVOKE DrawDino, ADDR dino1, distanceFromGround
+          INVOKE DrawDino, ADDR dinoRunning1, distanceFromGround
           jmp EndOfProcedure
 
      DrawDinoTwo:
-          INVOKE DrawDino, ADDR dino2, distanceFromGround
+          INVOKE DrawDino, ADDR dinoRunning2, distanceFromGround
 
      EndOfProcedure:
           ret
