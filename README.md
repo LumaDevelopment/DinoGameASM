@@ -24,4 +24,3 @@ Score is milliseconds elapsed / 10
 - Ability to duck
 - Ability to restart game in same console window
 - `ConsoleSizePrompt` uses message boxes
-- Resizable

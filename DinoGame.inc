@@ -9,8 +9,6 @@ DINO_CROUCH = 2
 
 ; ----- SCREEN SIZE -----
 
-; Maybe can be eliminated at some point?
-
 TARGET_ROWS = 30
 TARGET_COLS = 120
 
