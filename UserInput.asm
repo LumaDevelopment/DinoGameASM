@@ -29,6 +29,10 @@ GetUserInput PROC USES ebx edx
 
           jmp DinoJump
 
+     ; TODO Instead of this, use Irvine pg. 460
+     ; "Getting the Keyboard State" to determine 
+     ; if the user is holding the down arrow key
+
      ; dx = 40 -> down arrow key -> crouch
      DownArrowKeyCheck:
           cmp dx,40
