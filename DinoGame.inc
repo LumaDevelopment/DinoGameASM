@@ -63,6 +63,11 @@ AreBoundingBoxesColliding PROTO,
      boxOne:BoundingBox,
      boxTwo:BoundingBox
 
+; PostTickDelay.asm
+
+PostTickDelay PROTO,
+     delayInMs:DWORD
+
 ; Score.asm
 
 RecordStartTime PROTO
