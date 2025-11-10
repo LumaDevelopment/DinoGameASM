@@ -43,6 +43,7 @@ ConsoleSizePrompt PROTO,
 
 DrawDino PROTO,
      dinoAddr:PTR BYTE,
+     spriteHeight:BYTE,
      distanceFromGround:BYTE
 
 DrawCurrentDino PROTO,

@@ -58,10 +58,15 @@ dinoCrouching2 BYTE "###   #########  ########","n",
 lastJumpStarted DWORD 0
 jumpCurve       BYTE  1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9,9,9,9,9,9,9,9,9,9,8,8,7,7,6,6,5,5,4,4,3,3,2,2,1,1
 
+; Crouching data
+
+isCrouching BYTE 0
+
 .code
 
 DrawDino PROC USES eax ebx ecx edx esi,
      dinoAddr:PTR BYTE,
+     spriteHeight:BYTE,
      distanceFromGround:BYTE
 
      ; Keep track of rows using EAX, 
@@ -99,7 +104,7 @@ DrawDino PROC USES eax ebx ecx edx esi,
           mov dh,al
           add dh,TARGET_ROWS
           sub dh,DINO_POS_Y
-          sub dh,DINO_RUNNING_HEIGHT
+          sub dh,spriteHeight
           sub dh,distanceFromGround
 
           ; Use ECX for column index
@@ -145,11 +150,11 @@ DrawCurrentDino PROC,
      jmp DrawDinoTwo
 
      DrawDinoOne:
-          INVOKE DrawDino, ADDR dinoRunning1, distanceFromGround
+          INVOKE DrawDino, ADDR dinoRunning1, DINO_RUNNING_HEIGHT, distanceFromGround
           jmp EndOfProcedure
 
      DrawDinoTwo:
-          INVOKE DrawDino, ADDR dinoRunning2, distanceFromGround
+          INVOKE DrawDino, ADDR dinoRunning2, DINO_RUNNING_HEIGHT, distanceFromGround
 
      EndOfProcedure:
           ret
