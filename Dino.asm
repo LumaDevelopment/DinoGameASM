@@ -193,9 +193,16 @@ DinoOnTick PROC USES eax ecx edx,
      currentTick:DWORD,
      userInput:BYTE
 
+     ; First order of business is to determine whether
+     ; to flip the dino sprite
      DetermineFlip:
-          ; First order of business is to determine whether
-          ; to flip the dino sprite
+          ; Do not flip sprite if dino is jumping
+          INVOKE GetCurrentJumpHeight, currentTick
+          cmp al,0
+          jne UserInputCheck
+          
+          ; If dino is not jumping, then flip if 
+          ; currentTick % TICKS_PER_DINO_SPRITE = 0
           mov eax,currentTick
           mov edx,0
           mov ecx,TICKS_PER_DINO_SPRITE
