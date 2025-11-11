@@ -21,5 +21,4 @@ Score is milliseconds elapsed / 10
 - Live on-screen score counter
 - Cacti (multiple sizes)
 - Pterodactyls
-- Ability to duck
 - Ability to restart game in same console window

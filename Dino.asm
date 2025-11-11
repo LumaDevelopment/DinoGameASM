@@ -232,6 +232,9 @@ DinoOnTick PROC USES eax ecx edx,
      currentTick:DWORD,
      userInput:BYTE
 
+     ; Assume not crouching unless stated otherwise
+     mov isDinoCrouching,0
+
      ; First order of business is to determine whether
      ; to flip the dino sprite
      DetermineFlip:
@@ -260,9 +263,6 @@ DinoOnTick PROC USES eax ecx edx,
           jmp EndOfProcedure
 
      OnJumpRequested:
-          ; TODO MOVE
-          mov isDinoCrouching,0
-
           ; Can definitely jump if lastJumpStarted = 0
           cmp lastJumpStarted,0
           je CanJumpAgain

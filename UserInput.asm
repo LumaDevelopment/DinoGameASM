@@ -11,7 +11,7 @@ INCLUDE DinoGame.inc
 ; in EAX.
 GetUserInput PROC USES ebx edx
      call ReadKey
-     jz NoInput
+     jz DownArrowKeyCheck
 
      ; space is jump
      cmp al,' '
@@ -20,7 +20,7 @@ GetUserInput PROC USES ebx edx
      ; all other inputs are 'extended keys', 
      ; so if AL != 0, then we are not interested
      cmp al,0
-     jne NoInput
+     jne DownArrowKeyCheck
 
      ; dx = 38 -> up arrow key -> jump
      UpArrowKeyCheck:
@@ -29,16 +29,15 @@ GetUserInput PROC USES ebx edx
 
           jmp DinoJump
 
-     ; TODO Instead of this, use Irvine pg. 460
-     ; "Getting the Keyboard State" to determine 
-     ; if the user is holding the down arrow key
-
-     ; dx = 40 -> down arrow key -> crouch
+     ; Jump button is not pressed, so see if the 
+     ; user is holding the down arrow key
      DownArrowKeyCheck:
-          cmp dx,40
-          jne NoInput
+          ; Constant found in https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+          INVOKE GetKeyState, VK_DOWN
+          test eax,8000h ; book tests bit 31 instead of 15 for some reason
+          jnz DinoCrouch ; zero flag not set = key is down
 
-          jmp DinoCrouch
+          jmp NoInput
 
      DinoJump:
           mov eax,DINO_JUMP
