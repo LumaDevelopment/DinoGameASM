@@ -33,8 +33,10 @@ GetUserInput PROC USES ebx edx
      ; user is holding the down arrow key
      DownArrowKeyCheck:
           ; Constant found in https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+          pushad
           INVOKE GetKeyState, VK_DOWN
           test eax,8000h ; book tests bit 31 instead of 15 for some reason
+          popad
           jnz DinoCrouch ; zero flag not set = key is down
 
           jmp NoInput
