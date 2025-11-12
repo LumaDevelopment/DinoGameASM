@@ -12,7 +12,11 @@ delayInHundredNs QWORD ?
 
 .code
 
-PostTickDelay PROC USES eax ebx ecx edx,
+; This procedure, called at the top of the tick, stores 
+; the time the tick started, and how long it should last. 
+; That way, even if more or less work needs to be done 
+; in each tick, they all last the same amount of time.
+TickStartForDelay PROC USES eax ecx edx,
      delayInMs:DWORD
 
      ; Convert delayInMs to delayInHundredNs = delayInMs * 10,000
@@ -27,6 +31,14 @@ PostTickDelay PROC USES eax ebx ecx edx,
      ; Record start time
      INVOKE GetDateTime, ADDR delayStartTime
 
+     ret
+TickStartForDelay ENDP
+
+; This procedure, called at the end of the tick, compares 
+; the current time to the time that the tick should end, 
+; and if that time has not reached, it continues to check 
+; the current time until such time is reached.
+DelayUntilTickEnd PROC USES eax edx
      CheckForDelayEnd:
          INVOKE GetDateTime, ADDR delayCurrentTime
 
@@ -54,6 +66,6 @@ PostTickDelay PROC USES eax ebx ecx edx,
 
      NotYet:
          jmp CheckForDelayEnd
-PostTickDelay ENDP
+DelayUntilTickEnd ENDP
 
 END

@@ -28,6 +28,9 @@ main PROC
 
 	; Main loop
 	GameTick:
+		; Store the tick start time
+		INVOKE TickStartForDelay, 10
+
 		; Set console title
 		pushad
 		INVOKE SetConsoleTitle, ADDR consoleTitle
@@ -48,8 +51,8 @@ main PROC
 		call IncrementTerrain
 		INVOKE DinoOnTick, ebx, al
 
-		; Delay for better visibility
-		INVOKE PostTickDelay,10
+		; Delay until the tick end time
+		call DelayUntilTickEnd
 
 		; Increment # of ticks, start next tick
 		inc ebx

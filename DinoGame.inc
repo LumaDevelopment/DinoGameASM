@@ -66,8 +66,10 @@ AreBoundingBoxesColliding PROTO,
 
 ; PostTickDelay.asm
 
-PostTickDelay PROTO,
+TickStartForDelay PROTO,
      delayInMs:DWORD
+
+DelayUntilTickEnd PROTO
 
 ; Score.asm
 
