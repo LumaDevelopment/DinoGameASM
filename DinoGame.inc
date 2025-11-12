@@ -64,7 +64,7 @@ AreBoundingBoxesColliding PROTO,
      boxOne:BoundingBox,
      boxTwo:BoundingBox
 
-; PostTickDelay.asm
+; TickDelay.asm
 
 TickStartForDelay PROTO,
      delayInMs:DWORD
