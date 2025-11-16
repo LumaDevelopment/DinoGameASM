@@ -12,6 +12,9 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
+	; Set timer resolution to 1 ms
+	call IncreaseTimerResolution
+
 	; Initialize screen buffer
 	call InitScreen
 

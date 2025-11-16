@@ -12,6 +12,18 @@ delayInHundredNs QWORD ?
 
 .code
 
+; Increase timer resolution to 1ms
+; From:
+; - https://learn.microsoft.com/en-us/windows/win32/api/_multimedia/
+; - https://learn.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
+IncreaseTimerResolution PROC
+     pushad
+     push 1
+     call timeBeginPeriod@4
+     popad
+     ret
+IncreaseTimerResolution ENDP
+
 ; This procedure, called at the top of the tick, stores 
 ; the time the tick started, and how long it should last. 
 ; That way, even if more or less work needs to be done 
