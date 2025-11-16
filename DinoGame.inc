@@ -1,6 +1,10 @@
 INCLUDE Irvine32.inc
 INCLUDE Macros.inc
 
+; Add the ability to set the timer resolution
+
+extern timeBeginPeriod@4: proc
+
 ; ----- USER INPUT -----
 
 NO_DINO_INPUT = 0
@@ -65,6 +69,8 @@ AreBoundingBoxesColliding PROTO,
      boxTwo:BoundingBox
 
 ; TickDelay.asm
+
+IncreaseTimerResolution PROTO
 
 TickStartForDelay PROTO,
      delayInMs:DWORD

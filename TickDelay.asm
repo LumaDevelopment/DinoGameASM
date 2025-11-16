@@ -5,31 +5,39 @@ INCLUDE DinoGame.inc
 
 .data
 
-delayStartTime   QWORD ?
-delayCurrentTime QWORD ?
-timeDiff         QWORD ?
-delayInHundredNs QWORD ?
+delayStartTime   DWORD ?
+storedDelayInMs  DWORD ?
 
 .code
+
+; Increase timer resolution to 1ms
+; From:
+; - https://learn.microsoft.com/en-us/windows/win32/api/_multimedia/
+; - https://learn.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timebeginperiod
+IncreaseTimerResolution PROC
+     pushad
+     push 1
+     call timeBeginPeriod@4
+     popad
+     ret
+IncreaseTimerResolution ENDP
 
 ; This procedure, called at the top of the tick, stores 
 ; the time the tick started, and how long it should last. 
 ; That way, even if more or less work needs to be done 
 ; in each tick, they all last the same amount of time.
-TickStartForDelay PROC USES eax ecx edx,
+TickStartForDelay PROC USES eax,
      delayInMs:DWORD
 
-     ; Convert delayInMs to delayInHundredNs = delayInMs * 10,000
+     ; Store delayInMs
      mov eax,delayInMs
-     mov edx,0
-     mov ecx,10000
-     mul ecx ; edx:eax = eax * ecx (64-bit result)
-
-     mov DWORD PTR delayInHundredNs,eax
-     mov DWORD PTR delayInHundredNs+4,edx
+     mov storedDelayInMs,eax
 
      ; Record start time
-     INVOKE GetDateTime, ADDR delayStartTime
+     pushad
+     INVOKE GetTickCount
+     mov delayStartTime,eax
+     popad
 
      ret
 TickStartForDelay ENDP
@@ -38,34 +46,28 @@ TickStartForDelay ENDP
 ; the current time to the time that the tick should end, 
 ; and if that time has not reached, it continues to check 
 ; the current time until such time is reached.
-DelayUntilTickEnd PROC USES eax edx
-     CheckForDelayEnd:
-         INVOKE GetDateTime, ADDR delayCurrentTime
+DelayUntilTickEnd PROC
+     ProcedureBody:
+          pushad
+          INVOKE GetTickCount
+          INVOKE CalculateTickDelta, delayStartTime, eax
 
-         ; timeDiff = delayCurrentTime - delayStartTime
-         mov eax,DWORD PTR delayCurrentTime
-         mov edx,DWORD PTR delayCurrentTime+4
-         sub eax,DWORD PTR delayStartTime
-         sbb edx,DWORD PTR delayStartTime+4
+          ; If tick delta > storedDelayInMs, jump to EndOfProcedure
+          cmp eax, storedDelayInMs
+          ja EndOfProcedure
 
-         mov DWORD PTR timeDiff,eax
-         mov DWORD PTR timeDiff+4,edx
+          ; Now eax has end time - start time, so we need to
+          ; sleep from storedDelayInMs - eax
+          mov ebx,eax
+          mov eax,storedDelayInMs
+          sub eax,ebx
 
-         ; Compare timeDiff >= delayInHundredNs ?
-         mov eax,DWORD PTR timeDiff
-         mov edx,DWORD PTR timeDiff+4
-
-         cmp edx,DWORD PTR delayInHundredNs+4
-         jb NotYet
-         ja EndOfProcedure
-         cmp eax,DWORD PTR delayInHundredNs
-         jb NotYet
+          ; Procedure used by Irvine Delay proc under the hood
+          INVOKE Sleep,eax
 
      EndOfProcedure:
-         ret
-
-     NotYet:
-         jmp CheckForDelayEnd
+          popad
+          ret
 DelayUntilTickEnd ENDP
 
 END
