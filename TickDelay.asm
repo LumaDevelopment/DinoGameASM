@@ -1,5 +1,5 @@
-; Sub <10ms precision delay based on the GetDateTime procedure
-; (which has ~100 ns precision in theory)
+; Procedures which allow each tick to occupy the same amount 
+; of time, no matter how much work is done within it.
 
 INCLUDE DinoGame.inc
 

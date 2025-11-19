@@ -97,7 +97,7 @@ WriteTerrain PROC USES eax ebx ecx edx,
 
           ; Check if continue
           cmp ebx,6
-          jne SetTerrainlayer
+          jne SetTerrainLayer
   
      ret
 WriteTerrain ENDP
