@@ -229,11 +229,35 @@ GetCurrentJumpHeight PROC USES ecx,
           ret
 GetCurrentJumpHeight ENDP
 
-UpdateDinoBounds PROC,
+UpdateDinoBounds PROC USES eax,
      currentTick:DWORD
 
-     ; isDinoCrouching is a memory location
-     ret
+     ; In all cases we will need to set these values
+     ; X VALUE NEVER CHANGES
+     mov dinoBounds.Position.Y, DINO_POS_Y
+
+     ; Determine if the dino is crouching
+     ; or if we need to check jump height
+     cmp isDinoCrouching,1
+     je DinoIsCrouching
+     jmp DinoRunningOrJumping
+
+     DinoIsCrouching:
+          mov dinoBounds.BoxWidth,  DINO_CROUCHING_WIDTH
+          mov dinoBounds.BoxHeight, DINO_CROUCHING_HEIGHT
+          jmp EndOfProcedure
+
+     DinoRunningOrJumping:
+          ; Add jump height (if any)
+          INVOKE GetCurrentJumpHeight, currentTick
+          add dinoBounds.Position.Y, al
+
+          ; Running sprite bounds
+          mov dinoBounds.BoxWidth,  DINO_RUNNING_WIDTH
+          mov dinoBounds.BoxHeight, DINO_RUNNING_HEIGHT
+
+     EndOfProcedure:
+          ret
 UpdateDinoBounds ENDP
 
 ; Procedure that handles any changes that should be 
@@ -301,6 +325,7 @@ DinoOnTick PROC USES eax ecx edx,
           mov isDinoCrouching,1
 
      EndOfProcedure:
+          INVOKE UpdateDinoBounds, currentTick
           ret
 DinoOnTick ENDP
 
