@@ -83,7 +83,11 @@ CalculateTickDelta ENDP
 DrawSprite PROC USES eax ebx ecx edx esi,
 	spriteAddr:PTR BYTE,
 	spriteBaseX:BYTE,
-	spriteBaseY:BYTE
+	spriteBaseY:BYTE,
+     startingCol:DWORD,
+     endingCol:DWORD,
+
+     ; TODO ADD START COLUMN AND END COLUMN
 
      ; Find sprite height
      INVOKE CalculateSpriteHeight, spriteAddr
@@ -116,6 +120,13 @@ DrawSprite PROC USES eax ebx ecx edx esi,
           cmp dl,0
           je EndOfProcedure
 
+          ; Finally, if ebx < startingCol or 
+          ; ebx > endingCol then skip draw
+          cmp ebx,startingCol
+          jb IncrementColumn
+          cmp ebx,endingCol
+          ja IncrementColumn
+
           ; Otherwise, draw the pixel
 
      DrawPixel:
@@ -127,6 +138,7 @@ DrawSprite PROC USES eax ebx ecx edx esi,
 
           ; Use ECX for column index
           mov cl,bl
+          sub cl,BYTE PTR startingCol ; Adjust for skipped columns
           add cl,spriteBaseX
 
           ; Save ESI and use it for character address

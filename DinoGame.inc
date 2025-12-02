@@ -132,7 +132,9 @@ CalculateTickDelta PROTO,
 DrawSprite PROTO,
      spriteAddr:PTR BYTE,
      spriteBaseX:BYTE,
-     spriteBaseY:BYTE
+     spriteBaseY:BYTE,
+     startingCol:DWORD,
+     endingCol:DWORD
 
 PrintCoordinate PROTO,
      coordLabel:PTR BYTE,

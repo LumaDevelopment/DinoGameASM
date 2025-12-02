@@ -45,7 +45,7 @@ pteroSprite2 BYTE "       #","n",
 .code
 
 DrawCactus PROC
-     INVOKE DrawSprite, ADDR cactusSprite, 100, CACTUS_POS_Y
+     INVOKE DrawSprite, ADDR cactusSprite, 100, CACTUS_POS_Y, 0, 0FFFFFFFFh
      ret
 DrawCactus ENDP
 
