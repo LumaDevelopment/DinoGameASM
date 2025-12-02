@@ -12,7 +12,9 @@ screenBuffer BYTE SCREEN_BUFFER_SIZE DUP(?)
              BYTE 0 ; null-terminator
 blankRow     BYTE TARGET_COLS        DUP(' ')
 
+; Used to determine sprite collisions
 writeCollision BYTE 0
+PUBLIC writeCollision
 
 .code
 

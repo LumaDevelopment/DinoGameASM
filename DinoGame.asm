@@ -1,10 +1,12 @@
 ; chrome://dino, adapted to Assembly
 
 INCLUDE DinoGame.inc
+EXTERN writeCollision:BYTE
 
 .data
 
-consoleTitle BYTE "chrome://dino",0
+consoleTitle BYTE  "chrome://dino",0
+endPauseInMs DWORD 2000
 
 .code
 
@@ -60,7 +62,9 @@ main PROC
 		; Render this tick
 		call RenderScreen
 
-		; TODO Physics?
+		; Determine if a collision occured
+		cmp writeCollision,1
+		je EndDinoGame
 
 		; Infinitely looping terrain
 		call IncrementTerrain
@@ -78,6 +82,13 @@ main PROC
 		jmp EndDinoGame
 
 	EndDinoGame:
+		; Stop counting score
+		call RecordEndTime
+
+		; Dramatic pause
+		mov eax,endPauseInMs
+		INVOKE Sleep,eax
+
 		exit
 main ENDP
 END main
