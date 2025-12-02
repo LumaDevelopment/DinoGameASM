@@ -53,6 +53,8 @@ currentPtero     BYTE  1 ; Alternates between 1 and 2
 .code
 
 DrawObstacle PROC
+     pushad ; Preserve registers
+
      cmp currentObstacle,0
      je EndOfProcedure ; Nothing to draw if no obstacle
      cmp currentObstacle,1
@@ -75,6 +77,7 @@ DrawObstacle PROC
                INVOKE DrawSprite, ADDR pteroSprite2, obstaclePosX, PTERO_POS_Y, obsStartingCol, obsEndingCol
 
      EndOfProcedure:
+          popad ; Preserve registers
           ret
 DrawObstacle ENDP
 
@@ -110,7 +113,61 @@ UpdateObstacleBounds PROC USES eax
           ret
 UpdateObstacleBounds ENDP
 
-; TODO move obstacle left
+MoveObstacleLeft PROC USES eax
+     cmp currentObstacle,0
+     je EndOfProcedure
+
+     ; Load obstacle width into eax
+     LoadObstacleWidth:
+          cmp currentObstacle,1
+          je  LoadCactusWidth
+          jmp LoadPteroWidth
+
+          LoadCactusWidth:
+               mov eax,CACTUS_WIDTH
+               jmp DecideMovementType
+
+          LoadPteroWidth:
+               mov eax,PTERO_WIDTH
+               jmp DecideMovementType
+
+     DecideMovementType:
+          cmp obsEndingCol,eax
+          jb EnterFromRight
+          cmp obstaclePosX,0
+          ja MovingAcrossScreen
+          jmp LeavingFromLeft
+
+     EnterFromRight:
+          ; Move obstacle to the left and add 
+          ; another column to be drawn
+          dec obstaclePosX
+          inc obsEndingCol
+          jmp EndOfProcedure
+
+     MovingAcrossScreen:
+          ; Move obstacle to the left
+          dec obstaclePosX
+          jmp EndOfProcedure
+
+     LeavingFromLeft:
+          ; Drop a column from being drawn
+          inc obsStartingCol
+
+          ; Determine whether obstacle is 
+          ; off screen yet
+          mov eax,obsStartingCol
+          cmp eax,obsEndingCol
+          je OffScreen
+          jmp EndOfProcedure
+
+     OffScreen:
+          ; Destroy obstacle by clearing currentObstacle
+          mov currentObstacle,0
+
+     EndOfProcedure:
+          ret
+MoveObstacleLeft ENDP
 
 InstantiateObstacle PROC USES eax,
      obstacleType:BYTE ; 1 = cactus, 2 = pterodactyl

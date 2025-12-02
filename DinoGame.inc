@@ -69,6 +69,8 @@ DrawObstacle PROTO
 
 UpdateObstacleBounds PROTO
 
+MoveObstacleLeft PROTO
+
 InstantiateObstacle PROTO,
      obstacleType:BYTE
 
