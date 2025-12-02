@@ -69,6 +69,9 @@ DrawObstacle PROTO
 
 UpdateObstacleBounds PROTO
 
+InstantiateObstacle PROTO,
+     obstacleType:BYTE
+
 ; Physics.asm
 
 AreBoundingBoxesColliding PROTO,

@@ -110,4 +110,26 @@ UpdateObstacleBounds PROC USES eax
           ret
 UpdateObstacleBounds ENDP
 
+; TODO move obstacle left
+
+InstantiateObstacle PROC USES eax,
+     obstacleType:BYTE ; 1 = cactus, 2 = pterodactyl
+
+     ; Set obstacle type
+     mov al,obstacleType
+     mov currentObstacle,al
+
+     ; Set starting position
+     mov obstaclePosX,TARGET_COLS
+     dec obstaclePosX
+
+     ; Set starting column range
+     mov obsStartingCol,0
+     mov obsEndingCol,1
+
+     ret
+InstantiateObstacle ENDP
+
+; TODO obstacle on tick
+
 END

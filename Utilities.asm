@@ -87,8 +87,6 @@ DrawSprite PROC USES eax ebx ecx edx esi,
      startingCol:DWORD,
      endingCol:DWORD,
 
-     ; TODO ADD START COLUMN AND END COLUMN
-
      ; Find sprite height
      INVOKE CalculateSpriteHeight, spriteAddr
 
