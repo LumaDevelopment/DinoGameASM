@@ -62,6 +62,10 @@ jumpCurve       BYTE  1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9,9,9,9,9,9,9,9,9,9,8,
 
 isDinoCrouching BYTE 0
 
+; Physics data
+
+dinoBounds BoundingBox <<DINO_POS_X, DINO_POS_Y>, DINO_RUNNING_WIDTH, DINO_RUNNING_HEIGHT>
+
 .code
 
 DrawDino PROC USES eax ebx ecx edx esi,
@@ -224,6 +228,13 @@ GetCurrentJumpHeight PROC USES ecx,
      EndOfProcedure:
           ret
 GetCurrentJumpHeight ENDP
+
+UpdateDinoBounds PROC,
+     currentTick:DWORD
+
+     ; isDinoCrouching is a memory location
+     ret
+UpdateDinoBounds ENDP
 
 ; Procedure that handles any changes that should be 
 ; made to the dino spirte or current action on any 
