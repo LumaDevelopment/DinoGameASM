@@ -45,6 +45,9 @@ main PROC
 		INVOKE GetCurrentJumpHeight, ebx
 		INVOKE DrawCurrentDino, al
 
+		; TODO REMOVE
+		call DrawCactus
+
 		call RenderScreen
 
 		; Get user input for per-tick procedures

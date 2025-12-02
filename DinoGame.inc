@@ -57,6 +57,10 @@ DinoOnTick PROTO,
      currentTick:DWORD,
      userInput:BYTE
 
+; Obstacles.asm
+
+DrawCactus PROTO
+
 ; Physics.asm
 
 AreBoundingBoxesColliding PROTO,
