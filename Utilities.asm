@@ -121,11 +121,11 @@ DrawSprite PROC USES eax ebx ecx edx esi,
           je EndOfProcedure
 
           ; Finally, if ebx < startingCol or 
-          ; ebx > endingCol then skip draw
+          ; ebx >= endingCol then skip draw
           cmp ebx,startingCol
           jb IncrementColumn
           cmp ebx,endingCol
-          ja IncrementColumn
+          jae IncrementColumn
 
           ; Otherwise, draw the pixel
 
