@@ -46,7 +46,7 @@ ConsoleSizePrompt PROTO,
 ; Dino.asm
 
 DrawCurrentDino PROTO,
-     distanceFromGround: BYTE
+     currentTick:DWORD
 
 FlipCurrentDino PROTO
 

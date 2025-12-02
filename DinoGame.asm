@@ -42,12 +42,12 @@ main PROC
 		INVOKE SetConsoleTitle, ADDR consoleTitle
 		popad
 
-		; Render this frame
+		; Draw everything to be rendered
 		INVOKE WriteTerrain, TARGET_ROWS
-		INVOKE GetCurrentJumpHeight, ebx
 		call DrawObstacle
-		INVOKE DrawCurrentDino, al
+		INVOKE DrawCurrentDino, ebx
 
+		; Render this tick
 		call RenderScreen
 
 		; Get user input and use it to affect dino

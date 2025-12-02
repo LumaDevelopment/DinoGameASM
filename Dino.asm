@@ -79,11 +79,13 @@ dinoBounds BoundingBox <<DINO_POS_X, DINO_POS_Y>, DINO_RUNNING_WIDTH, DINO_RUNNI
 ; Draws the current dino sprite, factoring in `currentDino`
 ; and whether the dino is currently crouching.
 DrawCurrentDino PROC USES eax,
-     distanceFromGround:BYTE
+     currentTick:DWORD
+
+     ; Load distance from ground into AL
+     INVOKE GetCurrentJumpHeight,currentTick
 
      ; Calculate dino Y position
-     mov al,DINO_POS_Y
-     add al,distanceFromGround
+     add al,DINO_POS_Y
 
      ; Decide which dino to draw
      cmp currentDino,1
