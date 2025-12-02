@@ -56,7 +56,15 @@ dinoCrouching2 BYTE "###   #########  ########","n",
 ; Jumping data
 
 lastJumpStarted DWORD 0
-jumpCurve       BYTE  1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1
+
+TICKS_PER_ASCENT = 2
+PEAK_DINO_HEIGHT = 15
+TICKS_AT_PEAK = 15
+TICKS_PER_DESCENT = 2
+
+PEAK_START_TICK = (PEAK_DINO_HEIGHT - 1) * TICKS_PER_ASCENT
+DESCENT_START_TICK = PEAK_START_TICK + TICKS_AT_PEAK
+DESCENT_END_TICK = DESCENT_START_TICK + ((PEAK_DINO_HEIGHT - 1) * TICKS_PER_DESCENT)
 
 ; Crouching data
 
@@ -143,11 +151,44 @@ GetCurrentJumpHeight PROC USES ecx,
      sub ecx,lastJumpStarted
 
      ; Determine whether the dino is off the ground or not
-     cmp ecx,LENGTHOF jumpCurve
+     cmp ecx,DESCENT_END_TICK
      jae OnGround
 
-     OffGround:
-          mov al, BYTE PTR jumpCurve[ecx]
+     DetermineJumpPhase:
+          cmp ecx,PEAK_START_TICK
+          jb Ascending
+          cmp ecx,DESCENT_START_TICK
+          jb AtPeak
+          jmp Descending
+
+     Ascending:
+          push eax
+          mov ax,cx
+          mov cl,TICKS_PER_ASCENT
+          jmp BeginDividing
+
+     AtPeak:
+          mov al,PEAK_DINO_HEIGHT
+          jmp EndOfProcedure
+
+     Descending:
+          push eax
+          mov ax,DESCENT_END_TICK
+          sub ax,cx ; Subtract from end instead of divide elapsed
+          mov cl,TICKS_PER_DESCENT
+
+     BeginDividing:
+          ; Accept dividend in AX and divisor in CL
+          div cl ; Divide ticks elapsed by ascent/descent rate
+
+          cmp ah,0
+          je EndDividing ; No round up required if remainder is 0
+          inc al         ; Round up if remainder
+
+     EndDividing:
+          mov cl,al ; move quotient into cl
+          pop eax   ; restore EAX
+          mov al,cl ; move quotient back into al
           jmp EndOfProcedure
 
      OnGround:
@@ -233,7 +274,7 @@ DinoOnTick PROC USES eax ecx edx,
           ; Calc ticks elapsed since last jump
           mov ecx,currentTick
           sub ecx,lastJumpStarted
-          cmp ecx,LENGTHOF jumpCurve
+          cmp ecx,DESCENT_END_TICK
           jbe EndOfProcedure ; cannot jump again
 
      CanJumpAgain:
