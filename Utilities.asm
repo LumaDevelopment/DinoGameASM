@@ -3,7 +3,41 @@
 
 INCLUDE DinoGame.inc
 
+.data
+
+linesInSprite BYTE ?
+
 .code
+
+; Given the address of a null-terminated string, 
+; puts the number of occurences of "n" in the 
+; string + 1 in `linesInSprite`.
+CalculateSpriteHeight PROC USES eax ecx esi,
+     spriteAddr:PTR BYTE
+
+     ; Initialize registers
+     mov esi,spriteAddr
+     mov ecx,0
+
+     CountLoop:
+          mov al,[esi]
+          cmp al,0
+          je DoneCounting ; Have reached null terminator?
+
+          cmp al,'n'
+          jne SkipIncrement ; Is or is not new line?
+
+          inc ecx ; New line!
+
+     SkipIncrement:
+          inc esi
+          jmp CountLoop
+
+     DoneCounting:
+          inc ecx ; Add line for null terminator
+          mov linesInSprite, cl ; move lower byte of ECX into memory
+          ret
+CalculateSpriteHeight ENDP
 
 ; Given two values obtained with `GetTickCount`, 
 ; calculates the distance between them, accounting 
@@ -49,8 +83,10 @@ CalculateTickDelta ENDP
 DrawSprite PROC USES eax ebx ecx edx esi,
 	spriteAddr:PTR BYTE,
 	spriteBaseX:BYTE,
-	spriteBaseY:BYTE,
-	spriteHeight:BYTE
+	spriteBaseY:BYTE
+
+     ; Find sprite height
+     INVOKE CalculateSpriteHeight, spriteAddr
 
 	; Keep track of rows using EAX, columns
      ; using EBX, and raw character index
@@ -87,7 +123,7 @@ DrawSprite PROC USES eax ebx ecx edx esi,
           mov dh,al
           add dh,TARGET_ROWS
           sub dh,spriteBaseY
-          sub dh,spriteHeight
+          sub dh,linesInSprite
 
           ; Use ECX for column index
           mov cl,bl

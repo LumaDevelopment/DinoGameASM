@@ -113,6 +113,9 @@ GetUserInput PROTO
 
 ; Utilities.asm
 
+CalculateSpriteHeight PROTO,
+     spriteAddr:PTR BYTE
+
 CalculateTickDelta PROTO,
      startTime:DWORD,
      endTime:DWORD
@@ -120,8 +123,7 @@ CalculateTickDelta PROTO,
 DrawSprite PROTO,
      spriteAddr:PTR BYTE,
      spriteBaseX:BYTE,
-     spriteBaseY:BYTE,
-     spriteHeight:BYTE
+     spriteBaseY:BYTE
 
 PrintCoordinate PROTO,
      coordLabel:PTR BYTE,

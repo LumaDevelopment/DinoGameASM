@@ -87,11 +87,11 @@ DrawCurrentDino PROC USES eax,
           je DrawCrouchingDinoOne
 
           DrawRunningDinoOne:
-               INVOKE DrawSprite, ADDR dinoRunning1, DINO_POS_X, al, DINO_RUNNING_HEIGHT
+               INVOKE DrawSprite, ADDR dinoRunning1, DINO_POS_X, al
                jmp EndOfProcedure
 
           DrawCrouchingDinoOne:
-               INVOKE DrawSprite, ADDR dinoCrouching1, DINO_POS_X, al, DINO_CROUCHING_HEIGHT
+               INVOKE DrawSprite, ADDR dinoCrouching1, DINO_POS_X, al
                jmp EndOfProcedure
 
      DrawDinoTwo:
@@ -99,11 +99,11 @@ DrawCurrentDino PROC USES eax,
           je DrawCrouchingDinoTwo
 
           DrawRunningDinoTwo:
-               INVOKE DrawSprite, ADDR dinoRunning2, DINO_POS_X, al, DINO_RUNNING_HEIGHT
+               INVOKE DrawSprite, ADDR dinoRunning2, DINO_POS_X, al
                jmp EndOfProcedure
 
           DrawCrouchingDinoTwo:
-               INVOKE DrawSprite, ADDR dinoCrouching2, DINO_POS_X, al, DINO_CROUCHING_HEIGHT
+               INVOKE DrawSprite, ADDR dinoCrouching2, DINO_POS_X, al
                jmp EndOfProcedure
 
      EndOfProcedure:
