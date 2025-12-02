@@ -48,7 +48,7 @@ obstaclePosX    BYTE  ?
 obsStartingCol  DWORD ?
 obsEndingCol    DWORD ?
 obsBounds       BoundingBox <<,>,,>
-pteroSprite     BYTE  1 ; Alternates between 1 and 2
+currentPtero     BYTE  1 ; Alternates between 1 and 2
 
 .code
 
@@ -64,7 +64,7 @@ DrawObstacle PROC
           jmp EndOfProcedure
 
      DrawPterodactyl:
-          cmp pteroSprite,1
+          cmp currentPtero,1
           jne DrawPterodactylTwo
 
           DrawPterodactylOne:

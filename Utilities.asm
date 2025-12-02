@@ -171,6 +171,30 @@ DrawSprite PROC USES eax ebx ecx edx esi,
           ret
 DrawSprite ENDP
 
+FlipCurrentSprite PROC USES eax esi,
+     currentSpriteVar:PTR BYTE
+
+     ; Load byte into 
+     mov esi,currentSpriteVar
+     mov al,BYTE PTR [esi]
+
+     ; Decide which sprite to flip to
+     cmp al,1
+     je  FlipToSpriteTwo
+     jmp FlipToSpriteOne
+
+     FlipToSpriteTwo:
+          inc al
+          jmp EndOfProcedure
+
+     FlipToSpriteOne:
+          dec al
+
+     EndOfProcedure:
+          mov BYTE PTR [esi],al
+          ret
+FlipCurrentSprite ENDP
+
 ; Given the label for a coordinate, the X value, 
 ; and the Y value, prints the coordinate, ending 
 ; with a new line.

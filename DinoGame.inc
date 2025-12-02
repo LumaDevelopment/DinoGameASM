@@ -48,8 +48,6 @@ ConsoleSizePrompt PROTO,
 DrawCurrentDino PROTO,
      currentTick:DWORD
 
-FlipCurrentDino PROTO
-
 GetCurrentJumpHeight PROTO,
      currentTick:DWORD
 
@@ -135,6 +133,9 @@ DrawSprite PROTO,
      spriteBaseY:BYTE,
      startingCol:DWORD,
      endingCol:DWORD
+
+FlipCurrentSprite PROTO,
+     currentSpriteVar:PTR BYTE
 
 PrintCoordinate PROTO,
      coordLabel:PTR BYTE,

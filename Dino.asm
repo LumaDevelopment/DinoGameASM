@@ -120,23 +120,6 @@ DrawCurrentDino PROC USES eax,
           ret
 DrawCurrentDINO ENDP
 
-; If current dino is 1, flips it to dino 2, and vice versa.
-FlipCurrentDino PROC
-     cmp currentDino,1
-     je  FlipToDinoTwo
-     jmp FlipToDinoOne
-
-     FlipToDinoTwo:
-          inc currentDino
-          jmp EndOfProcedure
-
-     FlipToDinoOne:
-          dec currentDino
-
-     EndOfProcedure:
-          ret
-FlipCurrentDino ENDP
-
 ; Get the current height of the dino off the ground 
 ; given `lastJumpStarted`.
 ; Returns in AL.
@@ -257,7 +240,7 @@ DinoOnTick PROC USES eax ecx edx,
           div ecx
           cmp edx,0
           jne UserInputCheck
-          call FlipCurrentDino
+          INVOKE FlipCurrentSprite, ADDR currentDino
 
      UserInputCheck:
           ; Determine whether the user wants the dino 
