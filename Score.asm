@@ -4,10 +4,17 @@ INCLUDE DinoGame.inc
 
 TIME_DIVISOR_FOR_SCORE = 50 ; What to divide elapsed ms by to get score
 
+SCORE_DISPLAY_X = (TARGET_COLS / 2) - 10
+SCORE_DISPLAY_Y = 15
+
 .data
 
 scoreStartTime DWORD ?
 scoreEndTime   DWORD ?
+
+; Score display things
+
+scoreDisplayPrefix BYTE "Score: ",0
 
 .code
 
@@ -48,5 +55,48 @@ GetScore PROC USES ebx edx
      EndOfProcedure:
           ret
 GetScore ENDP
+
+DisplayScore PROC USES eax ebx ecx edx esi
+     call WipeScreen
+
+     ; eax = score, ebx = x, ecx = y, edx = indexing
+     call GetScore
+     mov bl,SCORE_DISPLAY_X
+     mov cl,SCORE_DISPLAY_Y
+     mov edx,0
+
+     DrawPrefix:
+          cmp BYTE PTR scoreDisplayPrefix[edx],0
+          je DrawScore
+
+          lea esi,scoreDisplayPrefix
+          add esi,edx
+          INVOKE SetPixelInScreen, cl, bl, esi
+          inc bl
+          inc edx
+          jmp DrawPrefix
+
+     DrawScore:
+          call RenderScreen
+
+          ; Pivot to Irvine for writing score to screen
+          ; because it is 4 am and I do not want to 
+          ; write an ASCII converter right now
+          mov dh,cl
+          dec dh
+          mov dl,bl
+          call Gotoxy
+
+          call WriteDec
+
+          mov ecx,SCORE_DISPLAY_Y
+
+     FinishScoreScreen:
+          call Crlf
+          loop FinishScoreScreen
+          
+     EndOfProcedure:
+          ret
+DisplayScore ENDP
 
 END

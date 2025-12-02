@@ -1,6 +1,6 @@
 INCLUDE DinoGame.inc
 
-SAFE_TICKS = 50
+SAFE_TICKS = 150
 
 ; On each tick where an obstacle does not exist, 
 ; there is a 1 in SPAWN_PROBABILITY chance an 

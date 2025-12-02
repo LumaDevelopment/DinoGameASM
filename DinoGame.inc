@@ -65,6 +65,8 @@ RecordEndTime PROTO
 
 GetScore PROTO
 
+DisplayScore PROTO
+
 ; Screen.asm
 
 InitScreen PROTO

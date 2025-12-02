@@ -89,10 +89,9 @@ main PROC
 		mov eax,endPauseInMs
 		INVOKE Sleep,eax
 
-		; Wipe screen
-		call WipeScreen
-		call RenderScreen
-
+		; Display score to screen and exit!
+		call DisplayScore
+		
 		exit
 main ENDP
 END main
