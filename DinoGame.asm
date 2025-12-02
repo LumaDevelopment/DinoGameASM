@@ -42,6 +42,12 @@ main PROC
 		INVOKE SetConsoleTitle, ADDR consoleTitle
 		popad
 
+		; Get user input and use it to affect dino
+		call GetUserInput
+		INVOKE DinoOnTick, ebx, al
+
+		; TODO ObstacleOnTick
+
 		; Draw everything to be rendered
 		INVOKE WriteTerrain, TARGET_ROWS
 		call DrawObstacle
@@ -50,15 +56,10 @@ main PROC
 		; Render this tick
 		call RenderScreen
 
-		; Get user input and use it to affect dino
-		call GetUserInput
-		INVOKE DinoOnTick, ebx, al
-
-		; Other per-tick procedures
-		call IncrementTerrain
-		; TODO ObstacleOnTick
-
 		; TODO Physics?
+
+		; Infinitely looping terrain
+		call IncrementTerrain
 
 		; Delay until the tick end time
 		call DelayUntilTickEnd
