@@ -12,6 +12,9 @@ main PROC
 	; Ensure the console size is correct
 	INVOKE ConsoleSizePrompt, TARGET_ROWS, TARGET_COLS
 
+	; Initialize starting seed value of Irvine random procedures
+	call Randomize
+
 	; Set timer resolution to 1 ms
 	call IncreaseTimerResolution
 
@@ -46,7 +49,8 @@ main PROC
 		call GetUserInput
 		INVOKE DinoOnTick, ebx, al
 
-		; TODO ObstacleOnTick
+		; Update everything obstacles!
+		INVOKE ObstacleOnTick, ebx
 
 		; Draw everything to be rendered
 		INVOKE WriteTerrain, TARGET_ROWS

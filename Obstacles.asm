@@ -1,5 +1,12 @@
 INCLUDE DinoGame.inc
 
+SAFE_TICKS = 50
+
+; On each tick where an obstacle does not exist, 
+; there is a 1 in SPAWN_PROBABILITY chance an 
+; obstacle spawns
+SPAWN_PROBABILITY = 75
+
 CACTUS_POS_Y = 1
 CACTUS_WIDTH = 12
 CACTUS_HEIGHT = 13
@@ -7,6 +14,7 @@ CACTUS_HEIGHT = 13
 PTERO_POS_Y = 8
 PTERO_WIDTH = 21
 PTERO_HEIGHT = 8
+TICKS_PER_PTERO_SPRITE = 20
 
 .data
 
@@ -48,7 +56,7 @@ obstaclePosX    BYTE  ?
 obsStartingCol  DWORD ?
 obsEndingCol    DWORD ?
 obsBounds       BoundingBox <<,>,,>
-currentPtero     BYTE  1 ; Alternates between 1 and 2
+currentPtero    BYTE  1 ; Alternates between 1 and 2
 
 .code
 
@@ -187,6 +195,68 @@ InstantiateObstacle PROC USES eax,
      ret
 InstantiateObstacle ENDP
 
-; TODO obstacle on tick
+ObstacleOnTick PROC USES eax ecx edx,
+     currentTick:DWORD
+
+     ; Let the user get their bearings at
+     ; the start
+     DetermineIfSafe:
+          cmp currentTick,SAFE_TICKS
+          jbe EndOfProcedure
+
+     DoesObstacleExist:
+          cmp currentObstacle,0
+          jne ObstacleAlreadyExists
+
+     ObstacleDNE:
+          ; Determine whether to spawn an obstacle
+          mov eax,SPAWN_PROBABILITY
+          call RandomRange
+          cmp eax,0
+          je SpawnObstacle
+
+          ; Do not do anything else this tick if no
+          ; obstacle is spawned
+          jmp EndOfProcedure
+
+     SpawnObstacle:
+          ; Determine whether to spawn a cactus 
+          ; or a pterodactyl
+          mov eax,2
+          call RandomRange
+          inc eax ; Ensures EAX in [1, 2]
+          INVOKE InstantiateObstacle,al ; Spawn obstacle
+          jmp UpdateBoundingBox
+
+     ObstacleAlreadyExists:
+          ; If obstacle already exists, shift it
+          call MoveObstacleLeft
+
+     UpdateBoundingBox:
+          ; Update for physics
+          call UpdateObstacleBounds
+
+          ; If this is a pterodactyl, we want 
+          ; to flip the sprite every once in 
+          ; a while
+          cmp currentObstacle,1
+          je EndOfProcedure
+
+     PteroSpriteManagement:
+          ; Flip pterodactyl sprite if
+          ; currentTick % TICKS_PER_PTERO_SPRITE = 0
+          mov eax,currentTick
+          mov edx,0
+          mov ecx,TICKS_PER_PTERO_SPRITE
+          div ecx
+          cmp edx,0
+          jne EndOfProcedure
+
+          ; Flip sprite!
+          INVOKE FlipCurrentSprite, ADDR currentPtero
+
+     EndOfProcedure:
+          ret
+ObstacleOnTick ENDP
 
 END

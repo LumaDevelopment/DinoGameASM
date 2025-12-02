@@ -74,6 +74,9 @@ MoveObstacleLeft PROTO
 InstantiateObstacle PROTO,
      obstacleType:BYTE
 
+ObstacleOnTick PROTO,
+     currentTick:DWORD
+
 ; Physics.asm
 
 AreBoundingBoxesColliding PROTO,
