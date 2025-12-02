@@ -51,6 +51,9 @@ DrawCurrentDino PROTO,
 GetCurrentJumpHeight PROTO,
      currentTick:DWORD
 
+UpdateDinoBounds PROTO,
+     currentTick:DWORD
+
 DinoOnTick PROTO,
      currentTick:DWORD,
      userInput:BYTE
@@ -64,20 +67,13 @@ GetTickLength PROTO,
 
 DrawObstacle PROTO
 
+UpdateObstacleBounds PROTO
+
 ; Physics.asm
 
 AreBoundingBoxesColliding PROTO,
      boxOne:BoundingBox,
      boxTwo:BoundingBox
-
-; TickDelay.asm
-
-IncreaseTimerResolution PROTO
-
-TickStartForDelay PROTO,
-     delayInMs:DWORD
-
-DelayUntilTickEnd PROTO
 
 ; Score.asm
 
@@ -113,6 +109,15 @@ WriteTerrain PROTO,
      screenLength:BYTE
 
 IncrementTerrain PROTO
+
+; TickDelay.asm
+
+IncreaseTimerResolution PROTO
+
+TickStartForDelay PROTO,
+     delayInMs:DWORD
+
+DelayUntilTickEnd PROTO
 
 ; UserInput.asm
 

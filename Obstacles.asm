@@ -78,4 +78,36 @@ DrawObstacle PROC
           ret
 DrawObstacle ENDP
 
+UpdateObstacleBounds PROC USES eax
+     cmp currentObstacle,0
+     je EndOfProcedure ; Nothing to update if no obstacle
+     
+     GroundWork:
+          ; Obstacle-agnostic bounding box updates
+
+          mov al,obstaclePosX
+          mov obsBounds.Position.X,al
+
+          mov eax,obsEndingCol
+          sub eax,obsStartingCol
+          mov obsBounds.BoxWidth,al
+
+          ; Jump to correct obstacle
+          cmp currentObstacle,1
+          je CactusBounds
+          jmp PteroBounds
+
+     CactusBounds:
+          mov obsBounds.Position.Y, CACTUS_POS_Y
+          mov obsBounds.BoxHeight,  CACTUS_HEIGHT
+          jmp EndOfProcedure
+
+     PteroBounds:
+          mov obsBounds.Position.Y, PTERO_POS_Y
+          mov obsBounds.BoxHeight,  PTERO_HEIGHT
+
+     EndOfProcedure:
+          ret
+UpdateObstacleBounds ENDP
+
 END
