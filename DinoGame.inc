@@ -64,7 +64,7 @@ GetTickLength PROTO,
 
 ; Obstacles.asm
 
-DrawCactus PROTO
+DrawObstacle PROTO
 
 ; Physics.asm
 

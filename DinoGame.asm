@@ -44,21 +44,21 @@ main PROC
 
 		; Render this frame
 		INVOKE WriteTerrain, TARGET_ROWS
-
 		INVOKE GetCurrentJumpHeight, ebx
+		call DrawObstacle
 		INVOKE DrawCurrentDino, al
-
-		; TODO REMOVE
-		call DrawCactus
 
 		call RenderScreen
 
-		; Get user input for per-tick procedures
+		; Get user input and use it to affect dino
 		call GetUserInput
-
-		; Execute per-tick procedures for terrain and dino
-		call IncrementTerrain
 		INVOKE DinoOnTick, ebx, al
+
+		; Other per-tick procedures
+		call IncrementTerrain
+		; TODO ObstacleOnTick
+
+		; TODO Physics?
 
 		; Delay until the tick end time
 		call DelayUntilTickEnd

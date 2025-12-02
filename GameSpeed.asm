@@ -4,9 +4,9 @@ INCLUDE DinoGame.inc
 
 .data
 
-tickLengthInMs DWORD 14
-shortenTickAt  DWORD 1000,2000,3000,4000,5000,6000,7000,0FFFFFFFFh
-;                    13   12   11   10   9    8    7
+tickLengthInMs DWORD 10
+shortenTickAt  DWORD 2000,4000,6000,0FFFFFFFFh
+;                    9    8    7
 shortenArrIdx  DWORD 0
 
 .code

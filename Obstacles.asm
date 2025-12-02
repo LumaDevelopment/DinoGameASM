@@ -42,11 +42,40 @@ pteroSprite2 BYTE "       #","n",
                   "        ############","n",
                   "          #######",0
 
+; Obstacle state tracking variables
+currentObstacle BYTE  0 ; 0 = none, 1 = cactus, 2 = pterodactyl
+obstaclePosX    BYTE  ?
+obsStartingCol  DWORD ?
+obsEndingCol    DWORD ?
+obsBounds       BoundingBox <<,>,,>
+pteroSprite     BYTE  1 ; Alternates between 1 and 2
+
 .code
 
-DrawCactus PROC
-     INVOKE DrawSprite, ADDR cactusSprite, 100, CACTUS_POS_Y, 0, 0FFFFFFFFh
-     ret
-DrawCactus ENDP
+DrawObstacle PROC
+     cmp currentObstacle,0
+     je EndOfProcedure ; Nothing to draw if no obstacle
+     cmp currentObstacle,1
+     je DrawCactus
+     jmp DrawPterodactyl
+
+     DrawCactus:
+          INVOKE DrawSprite, ADDR cactusSprite, obstaclePosX, CACTUS_POS_Y, obsStartingCol, obsEndingCol
+          jmp EndOfProcedure
+
+     DrawPterodactyl:
+          cmp pteroSprite,1
+          jne DrawPterodactylTwo
+
+          DrawPterodactylOne:
+               INVOKE DrawSprite, ADDR pteroSprite1, obstaclePosX, PTERO_POS_Y, obsStartingCol, obsEndingCol
+               jmp EndOfProcedure
+
+          DrawPterodactylTwo:
+               INVOKE DrawSprite, ADDR pteroSprite2, obstaclePosX, PTERO_POS_Y, obsStartingCol, obsEndingCol
+
+     EndOfProcedure:
+          ret
+DrawObstacle ENDP
 
 END
