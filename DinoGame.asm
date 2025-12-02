@@ -89,6 +89,10 @@ main PROC
 		mov eax,endPauseInMs
 		INVOKE Sleep,eax
 
+		; Wipe screen
+		call WipeScreen
+		call RenderScreen
+
 		exit
 main ENDP
 END main

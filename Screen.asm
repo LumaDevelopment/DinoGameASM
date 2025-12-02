@@ -67,6 +67,19 @@ WipeRowInScreen PROC,
      ret
 WipeRowInScreen ENDP
 
+; Wipes the screen by wiping every row in the screen
+WipeScreen PROC USES eax ecx
+     mov ecx,TARGET_ROWS
+
+     WipeLoop:
+          mov eax,ecx
+          dec eax
+          INVOKE WipeRowInScreen, al
+          loop WipeLoop
+
+     ret
+WipeScreen ENDP
+
 ; Sets the pixel at the given row and column to 
 ; the character at the location of the given 
 ; pointer. Will be used for drawing the dino 

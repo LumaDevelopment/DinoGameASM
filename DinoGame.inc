@@ -76,6 +76,8 @@ SetRowInScreen PROTO,
 WipeRowInScreen PROTO,
      rowIndex:BYTE
 
+WipeScreen PROTO
+
 SetPixelInScreen PROTO,
      rowIndex:BYTE,
      colIndex:BYTE,
