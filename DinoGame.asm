@@ -32,7 +32,10 @@ main PROC
 	; Main loop
 	GameTick:
 		; Store the tick start time
-		INVOKE TickStartForDelay, 10
+		push eax
+		INVOKE GetTickLength,ebx
+		INVOKE TickStartForDelay,eax
+		pop eax
 
 		; Set console title
 		pushad

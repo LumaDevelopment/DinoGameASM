@@ -57,6 +57,11 @@ DinoOnTick PROTO,
      currentTick:DWORD,
      userInput:BYTE
 
+; GameSpeed.asm
+
+GetTickLength PROTO,
+     currentTick:DWORD
+
 ; Obstacles.asm
 
 DrawCactus PROTO

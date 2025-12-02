@@ -14,6 +14,7 @@
     <MASM Include="Dino.asm" />
     <MASM Include="DinoGame.asm" />
     <MASM Include="ConsoleSizeMgmt.asm" />
+    <MASM Include="GameSpeed.asm" />
     <MASM Include="Obstacles.asm" />
     <MASM Include="Physics.asm" />
     <MASM Include="TickDelay.asm" />
