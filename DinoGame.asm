@@ -6,7 +6,7 @@ EXTERN writeCollision:BYTE
 .data
 
 consoleTitle BYTE  "chrome://dino",0
-endPauseInMs DWORD 2000
+endPauseInMs DWORD 1500
 
 .code
 
