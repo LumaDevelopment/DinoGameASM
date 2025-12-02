@@ -45,11 +45,6 @@ ConsoleSizePrompt PROTO,
 
 ; Dino.asm
 
-DrawDino PROTO,
-     dinoAddr:PTR BYTE,
-     spriteHeight:BYTE,
-     distanceFromGround:BYTE
-
 DrawCurrentDino PROTO,
      distanceFromGround: BYTE
 
@@ -121,6 +116,12 @@ GetUserInput PROTO
 CalculateTickDelta PROTO,
      startTime:DWORD,
      endTime:DWORD
+
+DrawSprite PROTO,
+     spriteAddr:PTR BYTE,
+     spriteBaseX:BYTE,
+     spriteBaseY:BYTE,
+     spriteHeight:BYTE
 
 PrintCoordinate PROTO,
      coordLabel:PTR BYTE,

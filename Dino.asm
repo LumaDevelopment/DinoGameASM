@@ -68,88 +68,16 @@ dinoBounds BoundingBox <<DINO_POS_X, DINO_POS_Y>, DINO_RUNNING_WIDTH, DINO_RUNNI
 
 .code
 
-DrawDino PROC USES eax ebx ecx edx esi,
-     dinoAddr:PTR BYTE,
-     spriteHeight:BYTE,
-     distanceFromGround:BYTE
-
-     ; Keep track of rows using EAX, 
-     ; columns using EBX, and raw 
-     ; character index using esi
-     mov eax,0
-     mov ebx,0
-     mov esi,0
-
-     ; Loop through every pixel of the dino,
-     ; not drawing anything on spaces,
-     ; dropping down to next row on 'n'
-     ; and terminating on 0
-
-     NewPixel:
-          mov edx, [dinoAddr]
-          mov dl, [edx + esi]
-
-          ; On space, skip draw
-          cmp dl,' '
-          je IncrementColumn
-
-          ; On 'n', increment line
-          cmp dl,'n'
-          je NewLine
-
-          ; On 0, end draw
-          cmp dl,0
-          je EndOfProcedure
-
-          ; Otherwise, draw the pixel
-
-     DrawPixel:
-          ; Use high byte of DX for row index
-          mov dh,al
-          add dh,TARGET_ROWS
-          sub dh,DINO_POS_Y
-          sub dh,spriteHeight
-          sub dh,distanceFromGround
-
-          ; Use ECX for column index
-          mov cl,bl
-          add cl,DINO_POS_X
-
-          ; Save ESI and use it for character address
-          push esi
-          add esi,dinoAddr
-
-          ; Save EAX, because it gets modified by the INVOKE
-          push eax
-
-          INVOKE SetPixelInScreen, dh, cl, esi
-
-          ; Restore registers
-          pop eax
-          pop esi
-
-     IncrementColumn:
-          inc ebx
-          jmp NextPixel
-
-     NewLine:
-          inc eax
-          mov ebx,0
-          jmp NextPixel
-
-     NextPixel:
-          inc esi
-          jmp NewPixel
-
-     EndOfProcedure:
-          ret
-DrawDino ENDP
-
 ; Draws the current dino sprite, factoring in `currentDino`
 ; and whether the dino is currently crouching.
-DrawCurrentDino PROC,
+DrawCurrentDino PROC USES eax,
      distanceFromGround:BYTE
 
+     ; Calculate dino Y position
+     mov al,DINO_POS_Y
+     add al,distanceFromGround
+
+     ; Decide which dino to draw
      cmp currentDino,1
      je DrawDinoOne
      jmp DrawDinoTwo
@@ -159,11 +87,11 @@ DrawCurrentDino PROC,
           je DrawCrouchingDinoOne
 
           DrawRunningDinoOne:
-               INVOKE DrawDino, ADDR dinoRunning1, DINO_RUNNING_HEIGHT, distanceFromGround
+               INVOKE DrawSprite, ADDR dinoRunning1, DINO_POS_X, al, DINO_RUNNING_HEIGHT
                jmp EndOfProcedure
 
           DrawCrouchingDinoOne:
-               INVOKE DrawDino, ADDR dinoCrouching1, DINO_CROUCHING_HEIGHT, distanceFromGround
+               INVOKE DrawSprite, ADDR dinoCrouching1, DINO_POS_X, al, DINO_CROUCHING_HEIGHT
                jmp EndOfProcedure
 
      DrawDinoTwo:
@@ -171,11 +99,11 @@ DrawCurrentDino PROC,
           je DrawCrouchingDinoTwo
 
           DrawRunningDinoTwo:
-               INVOKE DrawDino, ADDR dinoRunning2, DINO_RUNNING_HEIGHT, distanceFromGround
+               INVOKE DrawSprite, ADDR dinoRunning2, DINO_POS_X, al, DINO_RUNNING_HEIGHT
                jmp EndOfProcedure
 
           DrawCrouchingDinoTwo:
-               INVOKE DrawDino, ADDR dinoCrouching2, DINO_CROUCHING_HEIGHT, distanceFromGround
+               INVOKE DrawSprite, ADDR dinoCrouching2, DINO_POS_X, al, DINO_CROUCHING_HEIGHT
                jmp EndOfProcedure
 
      EndOfProcedure:
