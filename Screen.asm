@@ -12,6 +12,8 @@ screenBuffer BYTE SCREEN_BUFFER_SIZE DUP(?)
              BYTE 0 ; null-terminator
 blankRow     BYTE TARGET_COLS        DUP(' ')
 
+writeCollision BYTE 0
+
 .code
 
 ; Sets the last two bytes of every row in 
@@ -81,9 +83,22 @@ SetPixelInScreen PROC USES eax ebx esi,
      ; Write 1 byte from charPointer into screenBuffer[eax]
      mov esi,charPointer
      mov bl,[esi] ; Already reserved EBX for offset calculation
-     mov screenBuffer[eax],bl
 
-     ret
+     ; Determine if the character being 
+     ; written and the character already 
+     ; there is the same
+     cmp screenBuffer[eax],bl
+     jne NewCharacter
+
+     SameCharacter:
+          mov writeCollision,1
+          jmp EndOfProcedure
+
+     NewCharacter:
+          mov screenBuffer[eax],bl
+
+     EndOfProcedure:
+          ret
 SetPixelInScreen ENDP
 
 RenderScreen PROC USES edx

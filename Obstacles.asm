@@ -55,7 +55,6 @@ currentObstacle BYTE  0 ; 0 = none, 1 = cactus, 2 = pterodactyl
 obstaclePosX    BYTE  ?
 obsStartingCol  DWORD ?
 obsEndingCol    DWORD ?
-obsBounds       BoundingBox <<,>,,>
 currentPtero    BYTE  1 ; Alternates between 1 and 2
 
 .code
@@ -88,38 +87,6 @@ DrawObstacle PROC
           popad ; Preserve registers
           ret
 DrawObstacle ENDP
-
-UpdateObstacleBounds PROC USES eax
-     cmp currentObstacle,0
-     je EndOfProcedure ; Nothing to update if no obstacle
-     
-     GroundWork:
-          ; Obstacle-agnostic bounding box updates
-
-          mov al,obstaclePosX
-          mov obsBounds.Position.X,al
-
-          mov eax,obsEndingCol
-          sub eax,obsStartingCol
-          mov obsBounds.BoxWidth,al
-
-          ; Jump to correct obstacle
-          cmp currentObstacle,1
-          je CactusBounds
-          jmp PteroBounds
-
-     CactusBounds:
-          mov obsBounds.Position.Y, CACTUS_POS_Y
-          mov obsBounds.BoxHeight,  CACTUS_HEIGHT
-          jmp EndOfProcedure
-
-     PteroBounds:
-          mov obsBounds.Position.Y, PTERO_POS_Y
-          mov obsBounds.BoxHeight,  PTERO_HEIGHT
-
-     EndOfProcedure:
-          ret
-UpdateObstacleBounds ENDP
 
 MoveObstacleLeft PROC USES eax
      cmp currentObstacle,0
@@ -226,16 +193,13 @@ ObstacleOnTick PROC USES eax ecx edx,
           call RandomRange
           inc eax ; Ensures EAX in [1, 2]
           INVOKE InstantiateObstacle,al ; Spawn obstacle
-          jmp UpdateBoundingBox
+          jmp CheckIfPterodactyl
 
      ObstacleAlreadyExists:
           ; If obstacle already exists, shift it
           call MoveObstacleLeft
 
-     UpdateBoundingBox:
-          ; Update for physics
-          call UpdateObstacleBounds
-
+     CheckIfPterodactyl:
           ; If this is a pterodactyl, we want 
           ; to flip the sprite every once in 
           ; a while

@@ -16,7 +16,6 @@
     <MASM Include="ConsoleSizeMgmt.asm" />
     <MASM Include="GameSpeed.asm" />
     <MASM Include="Obstacles.asm" />
-    <MASM Include="Physics.asm" />
     <MASM Include="TickDelay.asm" />
     <MASM Include="Score.asm" />
     <MASM Include="Screen.asm" />

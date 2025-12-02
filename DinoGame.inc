@@ -16,21 +16,6 @@ DINO_CROUCH = 2
 TARGET_ROWS = 30
 TARGET_COLS = 120
 
-; ----- TYPES -----
-
-Coordinate STRUCT
-     X BYTE ?
-     Y BYTE ?
-Coordinate ENDS
-
-; The physical representation of a given sprite.
-; Used for collision calculations
-BoundingBox STRUCT
-     Position  Coordinate <>
-     BoxWidth  BYTE       ?
-     BoxHeight BYTE       ?
-BoundingBox ENDS
-
 ; ----- PROCEDURES -----
 
 ; ConsoleSizeMgmt.asm
@@ -51,9 +36,6 @@ DrawCurrentDino PROTO,
 GetCurrentJumpHeight PROTO,
      currentTick:DWORD
 
-UpdateDinoBounds PROTO,
-     currentTick:DWORD
-
 DinoOnTick PROTO,
      currentTick:DWORD,
      userInput:BYTE
@@ -67,8 +49,6 @@ GetTickLength PROTO,
 
 DrawObstacle PROTO
 
-UpdateObstacleBounds PROTO
-
 MoveObstacleLeft PROTO
 
 InstantiateObstacle PROTO,
@@ -76,12 +56,6 @@ InstantiateObstacle PROTO,
 
 ObstacleOnTick PROTO,
      currentTick:DWORD
-
-; Physics.asm
-
-AreBoundingBoxesColliding PROTO,
-     boxOne:BoundingBox,
-     boxTwo:BoundingBox
 
 ; Score.asm
 
