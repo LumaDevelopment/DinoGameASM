@@ -67,35 +67,20 @@ DisplayScore PROC USES eax ebx ecx edx esi
 
      DrawPrefix:
           cmp BYTE PTR scoreDisplayPrefix[edx],0
-          je DrawScore
+          je FinishProcedure
 
           lea esi,scoreDisplayPrefix
           add esi,edx
+          push eax
           INVOKE SetPixelInScreen, cl, bl, esi
+          pop eax
           inc bl
           inc edx
           jmp DrawPrefix
 
-     DrawScore:
+     FinishProcedure:
+          INVOKE WriteDecToScreen, cl, bl, eax
           call RenderScreen
-
-          ; Pivot to Irvine for writing score to screen
-          ; because it is 4 am and I do not want to 
-          ; write an ASCII converter right now
-          mov dh,cl
-          dec dh
-          mov dl,bl
-          call Gotoxy
-
-          call WriteDec
-
-          mov ecx,SCORE_DISPLAY_Y
-
-     FinishScoreScreen:
-          call Crlf
-          loop FinishScoreScreen
-          
-     EndOfProcedure:
           ret
 DisplayScore ENDP
 

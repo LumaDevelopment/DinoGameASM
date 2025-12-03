@@ -85,6 +85,11 @@ SetPixelInScreen PROTO,
      colIndex:BYTE,
      charPointer:PTR BYTE
 
+WriteDecToScreen PROTO,
+     rowIndex:BYTE,
+     colIndex:BYTE,
+     inputNum:DWORD
+
 RenderScreen PROTO
 
 ; Terrain.asm
