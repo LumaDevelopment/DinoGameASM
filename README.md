@@ -9,7 +9,7 @@ Source code, images, and sounds from the original game can be found [here](https
 
 Download `DinoGameASM.exe` and `terrain.txt` [here](https://github.com/LumaDevelopment/DinoGameASM/releases/tag/chrome_dino), place them in the same directory, then run `DinoGameASM.exe`. Use the up arrow key or space key to jump. Use the down arrow key to crouch. Beware: the game gets faster as time goes on!
 
-*Please see the above link for compataibility information.*
+*Please see the above link for compatibility information.*
 
 ## Project Structure
 
