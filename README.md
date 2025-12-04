@@ -1,24 +1,12 @@
 # DinoGameASM
-`chrome://dino`, remade in Assembly
+`chrome://dino`, remade in 32-bit assembly. DinoGameASM is written in Intel syntax and is assembled with the [Microsoft Macro Assembler (MASM)](https://en.wikipedia.org/wiki/Microsoft_Macro_Assembler).
 
-Original source code, images, and sounds can be found [here](https://source.chromium.org/chromium/chromium/src/+/main:components/neterror/).
+Source code, images, and sounds from the original game can be found [here](https://source.chromium.org/chromium/chromium/src/+/main:components/neterror/).
 
-Graphics are stored in three series of arrays:
+![A recording of DinoGameASM gameplay](https://github.com/user-attachments/assets/1f12d43f-5775-4c2a-8839-e39e69fb562a)
 
-- Terrain - These arrays can be rotated, so that the terrain goes an infinite loop but still has the appearance of moving.
-- Obstacles - These arrays can be populated with data and then shifted on each game tick, to give the appearance of movement. Whenever the obstacles are shifted left toward the dino, so are the coordinates of the collision regions.
-- Dino - These arrays would be less wide, only covering the max width of any one dino sprite. This would be completely overwritten in a cycle (or perhaps we just maintain a set of arrays for each dino sprite, and then choose which set of arrays we draw on the screen for each frame/game tick).
+## How to Play
 
-For each frame/game tick (haven't decided yet), we (1) clear screen, (2) write terrian arrays on to screen, (2) write obstacles on to screen, and (3) write dino on to screen.
+Download `DinoGameASM.exe` and `terrain.txt` [here](https://github.com/LumaDevelopment/DinoGameASM/releases/tag/chrome_dino), place them in the same directory, then run `DinoGameASM.exe`. Use the up arrow key or space key to jump. Use the down arrow key to crouch. Beware: the game gets faster as time goes on!
 
-We can increase game speed by increasing the # of ticks/second.
-
-Score is milliseconds elapsed / 10
-
-## Contest 2 Features
-
-- Gets faster as time goes on
-- Live on-screen score counter
-- Cacti (multiple sizes)
-- Pterodactyls
-- Ability to restart game in same console window
+*Please see the above link for compataibility information.*
